@@ -1,5 +1,4 @@
 const express = require('express'), //express 琜 
-    crypto = require('crypto'), //ま盞家?
     config = require('./config');//ま皌竚ゅン
 
 var app = express();//?ㄒexpress琜
@@ -16,16 +15,9 @@ app.get('/', function (req, res) {
     var array = [config.token, timestamp, nonce];
     array.sort();
 
-    //3.????才﹃钡Θ?才﹃?︽sha1盞
-    var tempStr = array.join('');
-    const hashCode = crypto.createHash('sha1'); //?盞? 
-    var resultCode = hashCode.update(tempStr, 'utf8').digest('hex'); //??才﹃?︽盞
-
     //4.???眔盞才﹃蒓signature?ゑ????―?方稬獺
-    if (resultCode === signature) {
+
         res.send(echostr);
-    } else {
-        res.send('mismatch');
     }
 });
 
