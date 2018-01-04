@@ -7,7 +7,7 @@ var app = express();// ?例express框架
 // 用于?理所有?入 3000 端口 get 的?接?求
 app.get('/', function (req, res) {
     // 1.?取微信服?器Get?求的?? signature、timestamp、nonce、echostr
-    var signature = req.query.signature,// 微信加密?名
+    var signature = req.query.msg_signature,// 微信加密?名
         timestamp = req.query.timestamp,// ??戳
         nonce = req.query.nonce,// ?机?
         echostr = req.query.echostr;// ?机字符串
