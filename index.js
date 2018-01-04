@@ -25,7 +25,7 @@ app.get('/', function (req, res) {
     if (resultCode === signature) {
         res.send(echostr);
     } else {
-        res.send('mismatch');
+        res.send("resultCode=" + resultCode + ",signature=" + signature);
     }
  });
 
