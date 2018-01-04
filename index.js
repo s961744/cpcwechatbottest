@@ -77,7 +77,7 @@ function getAccessToken() {
         //判? 本地存?的 access_token 是否有效
         if (accessTokenJson.access_token === "" || accessTokenJson.expires_time < currentTime) {
             requestGet(url).then(function (data) {
-                console.log(data);
+                console.log("requestGetdata=" + data);
                 var result = JSON.parse(data);
                 if (data.indexOf("errcode") < 0) {
                     accessTokenJson.access_token = result.access_token;
