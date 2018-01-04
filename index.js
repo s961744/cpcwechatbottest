@@ -22,16 +22,13 @@ app.get('/', function (req, res) {
     var resultCode = hashCode.update(tempStr, 'utf8').digest('hex'); // ??才﹃?︽盞
 
     // 4.???眔盞才﹃蒓signature?ゑ????―?方稬獺
-    //if (resultCode === signature) {
-    //    res.send(echostr);
-    //} else {
-    //    res.send("resultCode=" + resultCode + ",signature=" + signature);
-    //}
-    res.send("123456789");
+    if (resultCode === signature) {
+        res.send(echostr);
+    } else {
+        res.send("resultCode=" + resultCode + ",signature=" + signature);
+    }
+    //res.send("123456789");
  });
-
-// ?3000狠
-app.listen(3000);
 
 //  express 箇砞ǐ port 3000τ heroku 箇砞玱ぃ琌璶硓筁祘Α锣传
 var server = app.listen(process.env.PORT || 80, function () {
