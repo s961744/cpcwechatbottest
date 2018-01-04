@@ -36,6 +36,7 @@ function requestGet(url) {
             res.on('end', function () {
                 result = Buffer.concat(buffer, buffer.length).toString('utf-8');
                 //?³Ì¦Z?ªGªð¦^
+                console.log("result=" + result);
                 resolve(result);
             });
         }).on('error', function (err) {
