@@ -53,10 +53,11 @@ function getAccessToken() {
         var currentTime = new Date().getTime();
         //格式化?求地址
         var url = util.format(config.accessTokenApiURL.accessTokenApi, config.corpId, config.corpSecret);
-        console.log(url);
+        console.log("url=" + url);
         //判? 本地存?的 access_token 是否有效
         if (accessTokenJson.access_token === "" || accessTokenJson.expires_time < currentTime) {
             requestGet(url).then(function (data) {
+                console.log(data);
                 var result = JSON.parse(data);
                 if (data.indexOf("errcode") < 0) {
                     accessTokenJson.access_token = result.access_token;
