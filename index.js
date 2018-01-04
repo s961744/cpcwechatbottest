@@ -25,7 +25,7 @@ app.get('/', function (req, res) {
     if (resultCode === signature) {
         res.send(echostr);
     } else {
-        res.send("resultCode=" + resultCode + ",signature=" + signature + "config.token=" + config.token);
+        res.send("resultCode=" + resultCode + ",signature=" + signature + ",config.token=" + config.token + ",timestamp=" + timestamp + ",nonce=" + nonce + ",echostr=" + echostr);
     }
     //res.send("123456789");
  });
