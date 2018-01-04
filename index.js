@@ -26,7 +26,7 @@ app.get('/', function (req, res) {
 //用于?理 https Get?求方法
 function requestGet(url) {
     return new Promise(function (resolve, reject) {
-        https.get(url, function (res) {
+        http.get(url, function (res) {
             var buffer = [], result = "";
             //?听 data 事件
             res.on('data', function (data) {
