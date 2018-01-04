@@ -4,7 +4,7 @@ const express = require('express'), // express 框架
 
 var app = express();// ?例express框架
 
-// 用于?理所有?入 3000 端口 get 的?接?求
+// 用于?理所有?入端口 get 的?接?求
 app.get('/', function (req, res) {
     // 1.?取微信服?器Get?求的?? signature、timestamp、nonce、echostr
     var signature = req.query.msg_signature,// 微信加密?名
@@ -25,13 +25,13 @@ app.get('/', function (req, res) {
     if (resultCode === signature) {
         res.send(echostr);
     } else {
-        res.send("resultCode=" + resultCode + ",signature=" + signature);
+        res.send("resultCode=" + resultCode + ",signature=" + signature + "config.token=" + config.token);
     }
     //res.send("123456789");
  });
 
 // 因為 express 預設走 port 3000，而 heroku 上預設卻不是，要透過下列程式轉換
-var server = app.listen(process.env.PORT || 80, function () {
+var server = app.listen(process.env.PORT || 443, function () {
     var port = server.address().port;
     console.log("App now running on port", port);
 });
