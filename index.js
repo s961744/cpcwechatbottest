@@ -20,7 +20,7 @@ app.get('/', function (req, res) {
     res.send(s.message);
 
     getAccessToken().then(function (data) {
-        console.log("accessTokenJson=" + accessTokenJson);
+        console.log("accessTokenJson=" + JSON.stringify(accessTokenJson));
     });
  });
 
