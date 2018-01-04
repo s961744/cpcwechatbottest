@@ -48,7 +48,6 @@ this.requestGet = function (url) {
  * ?取微信 access_token
  */
 function getAccessToken() {
-    var that = this;
     return new Promise(function (resolve, reject) {
         //?取?前?? 
         var currentTime = new Date().getTime();
@@ -57,7 +56,7 @@ function getAccessToken() {
         console.log(url);
         //判? 本地存?的 access_token 是否有效
         if (accessTokenJson.access_token === "" || accessTokenJson.expires_time < currentTime) {
-            that.requestGet(url).then(function (data) {
+            requestGet(url).then(function (data) {
                 var result = JSON.parse(data);
                 if (data.indexOf("errcode") < 0) {
                     accessTokenJson.access_token = result.access_token;
