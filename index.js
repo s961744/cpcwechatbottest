@@ -62,7 +62,7 @@ function getAccessToken() {
                     accessTokenJson.access_token = result.access_token;
                     accessTokenJson.expires_time = new Date().getTime() + (parseInt(result.expires_in) - 200) * 1000;
                     //更新本地存?的
-                    fs.writeFile('./wechat/access_token.json', JSON.stringify(accessTokenJson));
+                    fs.writeFile('./accessToken.json', JSON.stringify(accessTokenJson));
                     //??取后的 access_token 返回
                     resolve(accessTokenJson.access_token);
                 } else {
@@ -76,6 +76,11 @@ function getAccessToken() {
         }
     });
 }
+
+process.on('unhandledRejection', (reason, p) => {
+    console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
+    // application specific logging, throwing an error, or other logic here
+});
 
 // 因為 express 預設走 port 3000，而 heroku 上預設卻不是，要透過下列程式轉換
 var server = app.listen(process.env.PORT || 443, function () {
