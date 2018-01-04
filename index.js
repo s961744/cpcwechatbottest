@@ -89,6 +89,7 @@ function getAccessToken() {
                     resolve(accessTokenJson.access_token);
                 } else {
                     //???ªð¦^
+                    console.log("error");
                     resolve(result);
                 }
             });
