@@ -84,6 +84,7 @@ function getAccessToken() {
                     accessTokenJson.expires_time = new Date().getTime() + (parseInt(result.expires_in) - 200) * 1000;
                     //更新本地存?的
                     fs.writeFile('./accessToken.json', JSON.stringify(accessTokenJson));
+                    console.log("update accessToken:" + JSON.stringify(accessTokenJson));
                     //??取后的 access_token 返回
                     resolve(accessTokenJson.access_token);
                 } else {
@@ -93,7 +94,9 @@ function getAccessToken() {
             });
         } else {
             //?本地存?的 access_token 返回
+            console.log("AccessToken exist:" + accessTokenJson.access_token);
             resolve(accessTokenJson.access_token);
+            
         }
     });
 }
