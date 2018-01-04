@@ -18,8 +18,7 @@ app.get('/', function (req, res) {
     //4.??者?得加密后的字符串可与signature?比，????求?源于微信
 
         res.send(echostr);
-    }
-});
+ });
 
 //?听3000端口
 app.listen(3000);
