@@ -55,7 +55,7 @@ function requestGet(url) {
                 }
                 else {
                     console.log("data=" + data);
-                    resolve(result);
+                    resolve(data);
                 }
             });
         }).on('error', function (err) {
@@ -76,46 +76,7 @@ function getAccessToken() {
         console.log("url=" + url);
         //判? 本地存?的 access_token 是否有效
         if (accessTokenJson.access_token === "" || accessTokenJson.expires_time < currentTime) {
-            https.get(url, function (res) {
-                var chunks = [], result = "", size = 0;
-                //?听 data 事件
-                res.on('data', function (chunk) {
-                    chunks.push(chunk);
-                    size += chunk.length;
-                });
-                //?听 ?据??完成事件
-                res.on('end', function () {
-                    var data = null;
-                    switch (chunks.length) {
-                        case 0: data = new Buffer(0);
-                            break;
-                        case 1: data = chunks[0];
-                            break;
-                        default:
-                            data = new Buffer(size);
-                            for (var i = 0, pos = 0, l = chunks.length; i < l; i++) {
-                                var chunk = chunks[i];
-                                chunk.copy(data, pos);
-                                pos += chunk.length;
-                            }
-                            break;
-                    }
-                    if (data === '[]') {
-                        console.log("Empty result.");
-                    }
-                    else {
-                        console.log("data=" + data);
-                        resolve(result);
-                    }
-                });
-            }).on('error', function (err) {
-                reject(err);
-            });
-            if (data === '[]') {
-                console.log("No messages need to be sent.");
-            }
-            else
-            {
+            requestGet(url).then(function (data) {
                 console.log("requestGetdata=" + data);
                 var result = JSON.parse(data);
                 if (data.indexOf("errcode") < 0) {
@@ -129,10 +90,8 @@ function getAccessToken() {
                     //???返回
                     resolve(result);
                 }
-            }
-        }
-        else
-        {
+            });
+        } else {
             //?本地存?的 access_token 返回
             resolve(accessTokenJson.access_token);
         }
