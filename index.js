@@ -31,6 +31,7 @@ function requestGet(url) {
             //?听 data 事件
             res.on('data', function (data) {
                 buffer.push(data);
+                console.log("data=" + data);
             });
             //?听 ?据??完成事件
             res.on('end', function () {
