@@ -4,7 +4,8 @@ const express = require('express'), // express 框架
     config = require('./config'), // 引入配置文件
     accessTokenJson = require('./accessToken'), //引入本地存?的 access_token
     https = require("https"),
-    util = require('util');
+    util = require('util'),
+    fs = require('fs');
 
 var app = express();// ?例express框架
 
