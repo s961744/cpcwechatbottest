@@ -27,18 +27,36 @@ app.get('/', function (req, res) {
 function requestGet(url) {
     return new Promise(function (resolve, reject) {
         https.get(url, function (res) {
-            var buffer = [], result = "";
+            var chunks = [], result = "", size = 0;
             //?听 data 事件
-            res.on('data', function (data) {
-                buffer.push(data);
-                console.log("data=" + data);
+            res.on('data', function (chunk) {
+                chunks.push(chunk);
+                size += chunk.length;
             });
             //?听 ?据??完成事件
             res.on('end', function () {
-                result = Buffer.concat(buffer, buffer.length).toString('utf-8');
-                //?最后?果返回
-                console.log("result=" + result);
-                resolve(result);
+                var data = null;
+                switch (chunks.length) {
+                    case 0: data = new Buffer(0);
+                        break;
+                    case 1: data = chunks[0];
+                        break;
+                    default:
+                        data = new Buffer(size);
+                        for (var i = 0, pos = 0, l = chunks.length; i < l; i++) {
+                            var chunk = chunks[i];
+                            chunk.copy(data, pos);
+                            pos += chunk.length;
+                        }
+                        break;
+                }
+                if (data === '[]') {
+                    console.log("Empty result.");
+                }
+                else {
+                    console.log(data);
+                    resolve(result);
+                }
             });
         }).on('error', function (err) {
             reject(err);
