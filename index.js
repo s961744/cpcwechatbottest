@@ -79,7 +79,7 @@ function getAccessToken() {
             requestGet(url).then(function (data) {
                 console.log("requestGetdata=" + data);
                 var result = JSON.parse(data);
-                if (data.indexOf("errcode") < 0) {
+                if (result.errcode == "0") {
                     accessTokenJson.access_token = result.access_token;
                     accessTokenJson.expires_time = new Date().getTime() + (parseInt(result.expires_in) - 200) * 1000;
                     //更新本地存?的
@@ -89,7 +89,7 @@ function getAccessToken() {
                     resolve(accessTokenJson.access_token);
                 } else {
                     //???返回
-                    console.log("error, indexOferrcode=" + data.indexOf("errcode"));
+                    console.log("error, errcode=" + result.errcode);
                     resolve(result);
                 }
             });
