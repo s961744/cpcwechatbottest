@@ -95,7 +95,7 @@ function getAccessToken() {
             });
         } else {
             //?本地存?的 access_token 返回
-            console.log("AccessToken exist:" + accessTokenJson.access_token);
+            console.log("AccessToken exist:" + accessTokenJson.access_token + ",CurrentTime=" + currentTime);
             resolve(accessTokenJson.access_token);
             
         }
