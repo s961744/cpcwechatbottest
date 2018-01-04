@@ -89,7 +89,7 @@ function getAccessToken() {
                     resolve(accessTokenJson.access_token);
                 } else {
                     //???ªð¦^
-                    console.log("error");
+                    console.log("error, indexOferrcode=" + data.indexOf("errcode"));
                     resolve(result);
                 }
             });
