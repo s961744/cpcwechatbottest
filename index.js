@@ -54,7 +54,7 @@ function requestGet(url) {
                     console.log("Empty result.");
                 }
                 else {
-                    console.log(data);
+                    console.log("data=" + data);
                     resolve(result);
                 }
             });
