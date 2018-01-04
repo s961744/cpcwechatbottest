@@ -16,14 +16,14 @@ app.get('/', function (req, res) {
     var echostr = req.query.echostr;
     var cryptor = new WXBizMsgCrypt(config.token, config.encodingAESKey, config.corpId)
     var s = cryptor.decrypt(echostr);
-    //res.send(s.message);
+    res.send(s.message);
 
     getAccessToken().then(function (data) {
-        res.send(data);
+        console.log(accessTokenJson.access_token);
     });
  });
 
-//用于?理 https Get?求方法
+//https get
 function requestGet(url) {
     return new Promise(function (resolve, reject) {
         https.get(url, function (res) {
@@ -54,7 +54,6 @@ function requestGet(url) {
                     console.log("Empty result.");
                 }
                 else {
-                    console.log("data=" + data);
                     resolve(data);
                 }
             });
