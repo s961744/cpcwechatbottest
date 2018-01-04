@@ -22,11 +22,12 @@ app.get('/', function (req, res) {
     var resultCode = hashCode.update(tempStr, 'utf8').digest('hex'); // ??入的字符串?行加密
 
     // 4.??者?得加密后的字符串可与signature?比，????求?源于微信
-    if (resultCode === signature) {
-        res.send(echostr);
-    } else {
-        res.send("resultCode=" + resultCode + ",signature=" + signature);
-    }
+    //if (resultCode === signature) {
+    //    res.send(echostr);
+    //} else {
+    //    res.send("resultCode=" + resultCode + ",signature=" + signature);
+    //}
+    res.send("123456789");
  });
 
 // ?听3000端口
