@@ -3,7 +3,7 @@ const express = require('express'), // express 框架
     WXBizMsgCrypt = require('wechat-crypto'), // 引入加密模?
     config = require('./config'), // 引入配置文件
     accessTokenJson = require('./accessToken'), //引入本地存?的 access_token
-    http = require("http"),
+    https = require("https"),
     util = require('util');
 
 var app = express();// ?例express框架
@@ -26,7 +26,7 @@ app.get('/', function (req, res) {
 //用于?理 https Get?求方法
 function requestGet(url) {
     return new Promise(function (resolve, reject) {
-        http.get(url, function (res) {
+        https.get(url, function (res) {
             var buffer = [], result = "";
             //?听 data 事件
             res.on('data', function (data) {
