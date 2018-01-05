@@ -78,7 +78,7 @@ function requestPost(access_token) {
             path: '/cgi-bin/message/send' + paraPost,
             method: 'POST',
             headers: {
-                'Content-Type': 'text/plain; charset=utf-8',
+                'Content-Type': 'application/json; charset=utf-8',
                 'Content-Length': Buffer.byteLength(post_data)
             }
         };
