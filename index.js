@@ -105,7 +105,7 @@ function getAccessToken() {
         // 當前時間
         var currentTime = new Date().getTime();
         // 格式化URL
-        var url = util.format(config.ApiURL.accessTokenApi, process.env.corpId, process.env.corpSecret);
+        var url = util.format(config.ApiURL.accessTokenApi, process.env.corpId, process.env.encodingAESKey);
         console.log("url=" + url);
         // 判斷accessToken.json是否還有效
         // 無效時
