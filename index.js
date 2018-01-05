@@ -17,7 +17,7 @@ app.get('/', function (req, res) {
     var cryptor = new WXBizMsgCrypt(process.env.token, process.env.encodingAESKey, process.env.corpId)
     var s = cryptor.decrypt(echostr);
     res.send(s.message);
-
+    console.log("s.message=" + s.message);
     getAccessToken().then(function (data) {
         console.log("accessTokenJson=" + JSON.stringify(accessTokenJson));
         requestPost(accessTokenJson.directory.access_token);
