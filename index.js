@@ -68,22 +68,14 @@ function requestGet(url) {
 function requestPost(access_token) {
     return new Promise(function (resolve, reject) {
         // Build the post string from an object
-        var post_data = {
-            "touser": "ZhangYaoYuan|ZhuXiaoMei",
-            "msgtype": "text",
-            "agentid": 1000002,
-            "text": {
-                "content": "TEST訊息發送\n123456\n來自heroku/nodejs。"
-            },
-            "safe": 0
-        };
+        var post_data = '{"touser": "ZhangYaoYuan|ZhuXiaoMei", "msgtype": "text", "agentid": 1000002,"text" : {"content" : "TEST訊息發送\n123456。"},"safe": 0}';
 
         // An object of options to indicate where to post to
         var paraPost = '?access_token=' + access_token;
         var post_options = {
             host: 'qyapi.weixin.qq.com',
             port: '443',
-            path: '/cgi-bin/message/send',
+            path: '/cgi-bin/message/send' + paraPost,
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
