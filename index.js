@@ -14,7 +14,7 @@ app.get('/', function (req, res) {
     var timestamp = req.query.timestamp;
     var nonce = req.query.nonce;
     var echostr = req.query.echostr;
-    var cryptor = new WXBizMsgCrypt(env.token, env.encodingAESKey, env.corpId)
+    var cryptor = new WXBizMsgCrypt(process.env.token, process.env.encodingAESKey, process.env.corpId)
     var s = cryptor.decrypt(echostr);
     res.send(s.message);
 
@@ -113,7 +113,7 @@ function getAccessToken() {
         // 當前時間
         var currentTime = new Date().getTime();
         // 格式化URL
-        var url = util.format(config.ApiURL.accessTokenApi, env.corpId, env.corpSecret);
+        var url = util.format(config.ApiURL.accessTokenApi, process.env.corpId, process.env.corpSecret);
         console.log("url=" + url);
         // 判斷accessToken.json是否還有效
         // 無效時
