@@ -1,9 +1,5 @@
 ﻿{
-  "accessTokenApiURL": {
+  "ApiURL": {
     "accessTokenApi": "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=%s&corpsecret=%s"
-  },
-  "corpId": "ww3548bf58b2c3f3ff",
-  "corpSecret": "weLuMORl2rW4c8bgBNTQ4naIswbCP3u2Mh7Nxe8qeeM",
-  "encodingAESKey": "lIQQSlgvltMvO28wp5GHIWMtAv7vSHcUqL156tTgZoy",
-  "token": "vNxzWVLRrHkuWd2Uqwo4CPhJ"
+  }
 }

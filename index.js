@@ -1,27 +1,29 @@
-const express = require('express'), // express 框架 
-    crypto = require('crypto'), // 引入加密模?
-    WXBizMsgCrypt = require('wechat-crypto'), // 引入加密模?
-    config = require('./config'), // 引入配置文件
-    accessTokenJson = require('./accessToken'), //引入本地存?的 access_token
+const
+    express = require('express'),
+    WXBizMsgCrypt = require('wechat-crypto'),
+    config = require('./config'),
+    accessTokenJson = require('./accessToken'),
     https = require("https"),
     util = require('util'),
     fs = require('fs');
 
-var app = express();// ?例express框架
+var app = express();
 
-// 用于?理所有?入端口 get 的?接?求
 app.get('/', function (req, res) {
     var msg_signature = req.query.msg_signature;
     var timestamp = req.query.timestamp;
     var nonce = req.query.nonce;
     var echostr = req.query.echostr;
-    var cryptor = new WXBizMsgCrypt(config.token, config.encodingAESKey, config.corpId)
+    var cryptor = new WXBizMsgCrypt(env.token, env.encodingAESKey, env.corpId)
     var s = cryptor.decrypt(echostr);
     res.send(s.message);
 
     getAccessToken().then(function (data) {
         console.log("accessTokenJson=" + JSON.stringify(accessTokenJson));
+        requestPost(accessTokenJson.directory.access_token);
     });
+
+
  });
 
 //https get
@@ -29,12 +31,10 @@ function requestGet(url) {
     return new Promise(function (resolve, reject) {
         https.get(url, function (res) {
             var chunks = [], result = "", size = 0;
-            //?听 data 事件
             res.on('data', function (chunk) {
                 chunks.push(chunk);
                 size += chunk.length;
             });
-            //?听 ?据??完成事件
             res.on('end', function () {
                 var data = null;
                 switch (chunks.length) {
@@ -64,40 +64,83 @@ function requestGet(url) {
     });
 }
 
+//https post
+function requestPost(access_token) {
+    return new Promise(function (resolve, reject) {
+        // Build the post string from an object
+        var post_data = querystring.stringify({
+            "touser": "ZhangYaoYuan|ZhuXiaoMei",
+            "msgtype": "text",
+            "agentid": 1000002,
+            "text": {
+                "content": "TEST訊息發送\n123456\n來自heroku/nodejs。"
+            },
+            "safe": 0
+        });
+
+        // An object of options to indicate where to post to
+        var paraPost = '?access_token=' + access_token;
+        var post_options = {
+            host: 'qyapi.weixin.qq.com',
+            port: '443',
+            path: '/cgi-bin/message/send',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-Length': Buffer.byteLength(post_data)
+            }
+        };
+
+        // Set up the request
+        var post_req = https.request(post_options, function (res) {
+            res.setEncoding('utf8');
+            res.on('data', function (chunk) {
+                console.log('Response: ' + chunk);
+            });
+        });
+
+        // post the data
+        post_req.write(post_data);
+        post_req.end();
+    });
+}
+
 /**
- * ?取微信 access_token
+ * 取得接收消息的access_token
  */
 function getAccessToken() {
     return new Promise(function (resolve, reject) {
-        //?取?前?? 
+        // 當前時間
         var currentTime = new Date().getTime();
-        //格式化?求地址
-        var url = util.format(config.accessTokenApiURL.accessTokenApi, config.corpId, config.corpSecret);
+        // 格式化URL
+        var url = util.format(config.ApiURL.accessTokenApi, env.corpId, env.corpSecret);
         console.log("url=" + url);
-        //判? 本地存?的 access_token 是否有效
-        if (accessTokenJson.access_token === "" || accessTokenJson.expires_time < currentTime) {
+        // 判斷accessToken.json是否還有效
+        // 無效時
+        if (accessTokenJson.directory.access_token === "" || accessTokenJson.directory.expires_time < currentTime) {
             requestGet(url).then(function (data) {
                 console.log("requestGetdata=" + data);
                 var result = JSON.parse(data);
+                //
                 if (result.errcode == "0") {
-                    accessTokenJson.access_token = result.access_token;
-                    accessTokenJson.expires_time = new Date().getTime() + (parseInt(result.expires_in) - 200) * 1000;
-                    //更新本地存?的
+                    accessTokenJson.directory.access_token = result.access_token;
+                    accessTokenJson.directory.expires_time = new Date().getTime() + (parseInt(result.expires_in) - 200) * 1000;
+                    // update accessToken.json
                     fs.writeFile('./accessToken.json', JSON.stringify(accessTokenJson));
                     console.log("update accessToken:" + JSON.stringify(accessTokenJson));
-                    //??取后的 access_token 返回
-                    resolve(accessTokenJson.access_token);
+                    // return access_token 
+                    resolve(accessTokenJson.directory.access_token);
                 } else {
-                    //???返回
+                    // return error msg
                     console.log("error, errcode=" + result.errcode);
                     resolve(result);
                 }
             });
+        // 有效時
         } else {
-            //?本地存?的 access_token 返回
-            console.log("AccessToken exist:" + accessTokenJson.access_token + ",CurrentTime=" + currentTime);
-            resolve(accessTokenJson.access_token);
-            
+            // return access_token 
+            console.log("AccessToken exist:" + accessTokenJson.directory + ",CurrentTime=" + currentTime);
+            resolve(accessTokenJson.directory.access_token);
         }
     });
 }
