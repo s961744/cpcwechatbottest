@@ -68,7 +68,7 @@ function requestGet(url) {
 function requestPost(access_token) {
     return new Promise(function (resolve, reject) {
         // Build the post string from an object
-        var post_data = '{"touser": "ZhangYaoYuan|ZhuXiaoMei", "msgtype": "text", "agentid": 1000002,"text" : {"content" : "TEST訊息發送\n123456。"},"safe": 0}';
+        var post_data = '{"touser": "A0012272", "msgtype": "text", "agentid": 1000002,"text" : {"content" : "TEST訊息發送\n123456。"},"safe": 0}';
 
         // An object of options to indicate where to post to
         var paraPost = '?access_token=' + access_token;
