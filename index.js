@@ -94,8 +94,8 @@ function requestPost(access_token) {
             port: '443',
             path: '/cgi-bin/message/send' + paraPost,
             method: 'POST',
+            gzip: true,
             headers: {
-                'accept-encoding' : 'gzip,deflate',
                 'Content-Type': 'application/json; charset=utf-8',
                 'Content-Length': Buffer.byteLength(post_data)
             }
