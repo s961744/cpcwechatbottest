@@ -95,6 +95,7 @@ function requestPost(access_token) {
             path: '/cgi-bin/message/send' + paraPost,
             method: 'POST',
             headers: {
+                'accept-encoding' : 'gzip,deflate',
                 'Content-Type': 'application/json; charset=utf-8',
                 'Content-Length': Buffer.byteLength(post_data)
             }
@@ -102,6 +103,7 @@ function requestPost(access_token) {
 
         // Set up the request
         var post_req = https.request(post_options, function (res) {
+            res.charset = 'utf-8';
             res.on('data', function (chunk) {
                 console.log('Response: ' + chunk);
             });
