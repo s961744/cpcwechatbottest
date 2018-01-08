@@ -1,6 +1,7 @@
 const
     express = require('express'),
     WXBizMsgCrypt = require('wechat-crypto'),
+    wechat = require('wechat-enterprise'),
     config = require('./config'),
     accessTokenJson = require('./accessToken'),
     https = require("https"),
@@ -8,6 +9,16 @@ const
     fs = require('fs');
 
 var app = express();
+var API = wechat.API;
+var config = {
+    token: process.env.token,
+    encodingAESKey: process.env.encodingAESKey,
+    corpId: process.env.corpId,
+    secret: 'VBL3TJlUgxtHrwcd2sxC-W26h08zbnzQB85ESo0fu94',
+    agentid: 'agent1000002'
+};
+
+var api = new API(process.env.corpId, process.env.agentSecret1000002, '1000002');
 
 app.get('/', function (req, res) {
     var msg_signature = req.query.msg_signature;
@@ -22,8 +33,23 @@ app.get('/', function (req, res) {
         console.log("accessTokenJson=" + JSON.stringify(accessTokenJson));
         requestPost(accessTokenJson.directory.access_token);
     });
+    var msg = '¡iÄ£¤¸¡j:\nTEST?®§?°e\n123456.';
+    var message = {
+        'msgtype': 'text',
+        'text': {
+            'content': msg
+        }
+    };
+    var touser = 'A0012272';
+    var toUsers = {
+        'touser': touser
+    }
+    api.send(toUsers, message, function (err, result) {
+        if (err) {
+            console.log('??®ø®§¥X?:' + JSON.stringify(err));
 
-
+        }
+    });
  });
 
 //https get
