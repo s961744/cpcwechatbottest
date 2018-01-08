@@ -10,14 +10,6 @@ const
 
 var app = express();
 var API = wechat.API;
-var config = {
-    token: process.env.token,
-    encodingAESKey: process.env.encodingAESKey,
-    corpId: process.env.corpId,
-    secret: 'VBL3TJlUgxtHrwcd2sxC-W26h08zbnzQB85ESo0fu94',
-    agentid: 'agent1000002'
-};
-
 var api = new API(process.env.corpId, process.env.agentSecret1000002, '1000002');
 
 app.get('/', function (req, res) {
