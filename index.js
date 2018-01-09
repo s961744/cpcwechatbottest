@@ -4,6 +4,7 @@
     wechat = require('wechat-enterprise'),
     config = require('./config'),
     accessTokenJson = require('./accessToken'),
+    http = require("http"),
     https = require("https"),
     util = require('util'),
     fs = require('fs'),
