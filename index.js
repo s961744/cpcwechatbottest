@@ -15,10 +15,10 @@ var job = schedule.scheduleJob('5,35 * * * * *', function () {
     // 設定GET RESTful API連接參數
     getAccessToken().then(function (data) {
         console.log("accessTokenJson=" + JSON.stringify(accessTokenJson));
-        var post_data = JSON.parse(JSON.stringify('{"touser": "A0012272", "msgtype": "text", "agentid": 1000002,"text" : {"content" : "TEST消息發送(繁體)\n123456."},"safe": 0}'));
+        var post_data = JSON.parse(JSON.stringify('{"touser": "A0012272", "msgtype": "text", "agentid": 1000002,"text" : {"content" : "TEST消息發送(繁體)\n123456."},"safe": 1}'));
         postMsg(accessTokenJson.directory.access_token, post_data);
     });
-    // 取得line_message_send中的待發訊息並發送
+    // 取得wechat_message_send中的待發訊息並發送
     //try {
     //    http.request(optionsGet, function (resGET) {
     //        //console.log('STATUS: ' + res.statusCode);
