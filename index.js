@@ -6,7 +6,8 @@
     accessTokenJson = require('./accessToken'),
     https = require("https"),
     util = require('util'),
-    fs = require('fs');
+    fs = require('fs'),
+    schedule = require('node-schedule');
 
 
 // 排程 1次/30sec (每分鐘的5秒及35秒)
