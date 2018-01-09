@@ -8,9 +8,108 @@
     util = require('util'),
     fs = require('fs');
 
+
+// 排程 1次/30sec (每分鐘的5秒及35秒)
+var job = schedule.scheduleJob('5,35 * * * * *', function () {
+    // 設定GET RESTful API連接參數
+    getAccessToken().then(function (data) {
+        console.log("accessTokenJson=" + JSON.stringify(accessTokenJson));
+        var post_data = JSON.parse(JSON.stringify('{"touser": "A0012272", "msgtype": "text", "agentid": 1000002,"text" : {"content" : "TEST消息發送(繁體)\n123456."},"safe": 0}'));
+        postMsg(accessTokenJson.directory.access_token, post_data);
+    });
+    // 取得line_message_send中的待發訊息並發送
+    //try {
+    //    http.request(optionsGet, function (resGET) {
+    //        //console.log('STATUS: ' + res.statusCode);
+    //        //console.log('HEADERS: ' + JSON.stringify(res.headers));
+    //        var chunks = [];
+    //        var size = 0;
+    //        //resGET.setEncoding('utf8');
+    //        resGET.on('data', function (chunk) {
+    //            chunks.push(chunk);
+    //            size += chunk.length;
+    //        });
+    //        resGET.on('end', function () {
+    //            var data = null;
+    //            switch (chunks.length) {
+    //                case 0: data = new Buffer(0);
+    //                    break;
+    //                case 1: data = chunks[0];
+    //                    break;
+    //                default:
+    //                    data = new Buffer(size);
+    //                    for (var i = 0, pos = 0, l = chunks.length; i < l; i++) {
+    //                        var chunk = chunks[i];
+    //                        chunk.copy(data, pos);
+    //                        pos += chunk.length;
+    //                    }
+    //                    break;
+    //            }
+    //            if (data == '[]') {
+    //                console.log('No messages need to be sent.');
+    //            }
+    //            else {
+    //                console.log(data);
+    //                try {
+    //                    var jdata = JSON.parse(data);
+    //                    jdata.forEach(function (row) {
+    //                        var message_id = row.message_id;
+    //                        var line_id = row.line_id;
+    //                        var message = row.message;
+    //                        try {
+    //                            var messageSend = JSON.parse(message);
+    //                            var line_idSend = line_id.split(',');
+    //                            console.log('message_id:' + message_id + ',line_id:' + line_idSend);
+    //                            client.multicast(line_idSend, messageSend).then(function () {
+    //                                // 設定PUT RESTful API連接參數
+    //                                var paraPut = '?strMessageId=' + message_id;
+    //                                var optionsPut = {
+    //                                    host: '116.50.39.201',
+    //                                    port: 7102,
+    //                                    path: '/LineRESTful/resources/LineRESTful' + paraPut,
+    //                                    method: 'PUT'
+    //                                };
+    //                                try {
+    //                                    // 發送後寫入actual_send_time
+    //                                    http.request(optionsPut, function (resPUT) {
+    //                                        resPUT.setEncoding('utf8');
+    //                                        resPUT.on('data', function (chunkPUT) {
+    //                                            console.log(chunkPUT);
+    //                                        });
+    //                                    }).end();
+    //                                }
+    //                                catch (e) {
+    //                                    return console.log("http request fail:" + JSON.stringify(optionsPut));
+    //                                }
+    //                            }).catch(function (error) {
+    //                                console.log(error);
+    //                            });
+    //                        }
+    //                        catch (e) {
+    //                            return console.log(e);
+    //                        }
+    //                    });
+    //                }
+    //                catch (e) {
+    //                    return console.log(e);
+    //                }
+    //            }
+    //        });
+    //    }).end();
+    //}
+    //catch (e) {
+    //    return console.log("http request fail:" + JSON.stringify(optionsGet));
+    //}
+});
+
+
 var app = express();
 var API = wechat.API;
 var api = new API(process.env.corpId, process.env.agentSecret1000002, '1000002');
+
+
+
+
 
 app.get('/', function (req, res) {
     var msg_signature = req.query.msg_signature;
@@ -21,10 +120,7 @@ app.get('/', function (req, res) {
     var s = cryptor.decrypt(echostr);
     res.send(s.message);
     console.log("s.message=" + s.message);
-    getAccessToken().then(function (data) {
-        console.log("accessTokenJson=" + JSON.stringify(accessTokenJson));
-        requestPost(accessTokenJson.directory.access_token);
-    });
+    
     var msg = '【耀元】:\nTEST消息发送(简体)\n123456.';
     var message = {
         'msgtype': 'text',
@@ -83,10 +179,10 @@ function requestGet(url) {
 }
 
 //https post
-function requestPost(access_token) {
+function postMsg(access_token, post_data) {
     return new Promise(function (resolve, reject) {
         // Build the post string from an object
-        var post_data = JSON.parse(JSON.stringify('{"touser": "A0012272", "msgtype": "text", "agentid": 1000002,"text" : {"content" : "TEST消息發送(繁體)\n123456."},"safe": 0}'));
+        //post_data = JSON.parse(JSON.stringify('{"touser": "A0012272", "msgtype": "text", "agentid": 1000002,"text" : {"content" : "TEST消息發送(繁體)\n123456."},"safe": 0}'));
         // An object of options to indicate where to post to
         var paraPost = '?access_token=' + access_token;
         var post_options = {
@@ -115,7 +211,7 @@ function requestPost(access_token) {
 }
 
 /**
- * 取得接收消息的access_token
+ * 取得應用的access_token
  */
 function getAccessToken() {
     return new Promise(function (resolve, reject) {
