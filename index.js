@@ -25,7 +25,7 @@ app.get('/', function (req, res) {
         console.log("accessTokenJson=" + JSON.stringify(accessTokenJson));
         requestPost(accessTokenJson.directory.access_token);
     });
-    var msg = '【耀元】:\nTEST?息?送\n123456.';
+    var msg = '【耀元】:\nTEST消息发送(简体)\n123456.';
     var message = {
         'msgtype': 'text',
         'text': {
@@ -38,7 +38,7 @@ app.get('/', function (req, res) {
     }
     api.send(toUsers, message, function (err, result) {
         if (err) {
-            console.log('??消息出?:' + JSON.stringify(err));
+            console.log('消息發送失敗:' + JSON.stringify(err));
 
         }
     });
@@ -86,7 +86,7 @@ function requestGet(url) {
 function requestPost(access_token) {
     return new Promise(function (resolve, reject) {
         // Build the post string from an object
-        var post_data = JSON.parse(JSON.stringify('{"touser": "A0012272", "msgtype": "text", "agentid": 1000002,"text" : {"content" : "TEST?息?送\n123456."},"safe": 0}'));
+        var post_data = JSON.parse(JSON.stringify('{"touser": "A0012272", "msgtype": "text", "agentid": 1000002,"text" : {"content" : "TEST消息發送(繁體)\n123456."},"safe": 0}'));
         // An object of options to indicate where to post to
         var paraPost = '?access_token=' + access_token;
         var post_options = {
