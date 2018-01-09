@@ -59,10 +59,10 @@ var job = schedule.scheduleJob('5,35 * * * * *', function () {
                         var jdata = JSON.parse(data);
                         jdata.forEach(function (row) {
                             var message_id = row.message_id;
-                            var user_id = row.user_id + '';
-                            var message = row.message + '';
+                            var user_id = row.user_id;
+                            var message = row.message;
                             try {
-                                var post_data = JSON.parse(JSON.stringify('{"touser": ' + user_id + ', "msgtype": "text", "agentid": 1000002,"text" : {"content" : ' + message + '},"safe": 0}'));
+                                var post_data = JSON.parse(JSON.stringify('{"touser": "' + user_id + '", "msgtype": "text", "agentid": 1000002,"text" : {"content" : "' + message + '"},"safe": 0}'));
                                 console.log(JSON.stringify(post_data));
 
                                 getAccessToken().then(function (data) {
@@ -223,7 +223,7 @@ function getAccessToken() {
         var currentTime = new Date().getTime();
         // 格式化URL
         var url = util.format(config.ApiURL.accessTokenApi, process.env.corpId, process.env.agentSecret1000002);
-        console.log("url=" + url);
+        //console.log("url=" + url);
         // 判斷accessToken.json是否還有效
         // 無效時
         if (accessTokenJson.directory.access_token === "" || accessTokenJson.directory.expires_time < currentTime) {
