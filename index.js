@@ -62,7 +62,9 @@ var job = schedule.scheduleJob('5,35 * * * * *', function () {
                             var user_id = row.user_id;
                             var message = row.message;
                             try {
-                                var post_data = JSON.parse(JSON.stringify('{"touser": ' + user_id + ', "msgtype": "text", "agentid": 1000002,"text" : {"content" : ' + message + '},"safe": 0}'));
+                                var user_idSend = JSON.parse(user_id);
+                                var messageSend = JSON.parse(message);
+                                var post_data = JSON.parse(JSON.stringify('{"touser": ' + user_idSend + ', "msgtype": "text", "agentid": 1000002,"text" : {"content" : ' + messageSend + '},"safe": 0}'));
                                 console.log(JSON.stringify(post_data));
 
                                 getAccessToken().then(function (data) {
