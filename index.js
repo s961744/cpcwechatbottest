@@ -147,7 +147,7 @@ function getAccessToken() {
         // ¦³®Ä®É
         } else {
             // return access_token 
-            console.log("AccessToken exist:" + accessTokenJson.directory + ",CurrentTime=" + currentTime);
+            console.log("AccessToken exist:" + JSON.stringify(accessTokenJson.directory) + ",CurrentTime=" + currentTime);
             resolve(accessTokenJson.directory.access_token);
         }
     });
