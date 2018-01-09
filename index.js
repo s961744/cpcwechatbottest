@@ -69,25 +69,25 @@ var job = schedule.scheduleJob('5,35 * * * * *', function () {
                                     postMsg(accessTokenJson.directory.access_token, post_data);
                                 });
                                 // 設定PUT RESTful API連接參數
-                                //var paraPut = '?strMessageId=' + message_id;
-                                //var optionsPut = {
-                                //    host: '116.50.39.201',
-                                //    port: 7102,
-                                //    path: '/LineRESTful/resources/LineRESTful' + paraPut,
-                                //    method: 'PUT'
-                                //};
-                                //try {
-                                //    // 發送後寫入actual_send_time
-                                //    http.request(optionsPut, function (resPUT) {
-                                //        resPUT.setEncoding('utf8');
-                                //        resPUT.on('data', function (chunkPUT) {
-                                //            console.log(chunkPUT);
-                                //        });
-                                //    }).end();
-                                //}
-                                //catch (e) {
-                                //    return console.log("http request fail:" + JSON.stringify(optionsPut));
-                                //}
+                                var paraPut = '?strMessageId=' + message_id;
+                                var optionsPut = {
+                                    host: '116.50.39.201',
+                                    port: 7102,
+                                    path: '/WechatRESTful/resources/WechatRESTfulTest' + paraPut,
+                                    method: 'PUT'
+                                };
+                                try {
+                                    // 發送後寫入actual_send_time
+                                    http.request(optionsPut, function (resPUT) {
+                                        resPUT.setEncoding('utf8');
+                                        resPUT.on('data', function (chunkPUT) {
+                                            console.log(chunkPUT);
+                                        });
+                                    }).end();
+                                }
+                                catch (e) {
+                                    return console.log("http request fail:" + JSON.stringify(optionsPut));
+                                }
                             }
                             catch (e) {
                                 return console.log(e);
@@ -248,7 +248,7 @@ function getAccessToken() {
         // 有效時
         } else {
             // return access_token 
-            console.log("AccessToken exist:" + JSON.stringify(accessTokenJson.directory) + ",CurrentTime=" + currentTime);
+            // console.log("AccessToken exist:" + JSON.stringify(accessTokenJson.directory) + ",CurrentTime=" + currentTime);
             resolve(accessTokenJson.directory.access_token);
         }
     });
