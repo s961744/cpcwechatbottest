@@ -63,7 +63,7 @@ var job = schedule.scheduleJob('5,35 * * * * *', function () {
                             var message = row.message;
                             try {
                                 var post_data = JSON.parse(JSON.stringify('{"touser": ' + user_id + ', "msgtype": "text", "agentid": 1000002,"text" : {"content" : ' + message + '},"safe": 0}'));
-                                console.log('message_id:' + message_id + ',user_id:' + user_id);
+                                console.log(JSON.stringify(post_data));
 
                                 getAccessToken().then(function (data) {
                                     console.log("accessTokenJson=" + JSON.stringify(accessTokenJson));
