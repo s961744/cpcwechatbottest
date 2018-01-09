@@ -1,4 +1,4 @@
-const
+ï»¿const
     express = require('express'),
     WXBizMsgCrypt = require('wechat-crypto'),
     wechat = require('wechat-enterprise'),
@@ -25,7 +25,7 @@ app.get('/', function (req, res) {
         console.log("accessTokenJson=" + JSON.stringify(accessTokenJson));
         requestPost(accessTokenJson.directory.access_token);
     });
-    var msg = '¡iÄ£¤¸¡j:\nTEST?®§?°e\n123456.';
+    var msg = 'ã€è€€å…ƒã€‘:\nTEST?æ¯?é€\n123456.';
     var message = {
         'msgtype': 'text',
         'text': {
@@ -38,7 +38,7 @@ app.get('/', function (req, res) {
     }
     api.send(toUsers, message, function (err, result) {
         if (err) {
-            console.log('??®ø®§¥X?:' + JSON.stringify(err));
+            console.log('??æ¶ˆæ¯å‡º?:' + JSON.stringify(err));
 
         }
     });
@@ -86,7 +86,7 @@ function requestGet(url) {
 function requestPost(access_token) {
     return new Promise(function (resolve, reject) {
         // Build the post string from an object
-        var post_data = JSON.parse(JSON.stringify('{"touser": "A0012272", "msgtype": "text", "agentid": 1000002,"text" : {"content" : "TEST?®§?°e\n123456."},"safe": 0}'));
+        var post_data = JSON.parse(JSON.stringify('{"touser": "A0012272", "msgtype": "text", "agentid": 1000002,"text" : {"content" : "TEST?æ¯?é€\n123456."},"safe": 0}'));
         // An object of options to indicate where to post to
         var paraPost = '?access_token=' + access_token;
         var post_options = {
@@ -115,17 +115,17 @@ function requestPost(access_token) {
 }
 
 /**
- * ¨ú±o±µ¦¬®ø®§ªºaccess_token
+ * å–å¾—æ¥æ”¶æ¶ˆæ¯çš„access_token
  */
 function getAccessToken() {
     return new Promise(function (resolve, reject) {
-        // ·í«e®É¶¡
+        // ç•¶å‰æ™‚é–“
         var currentTime = new Date().getTime();
-        // ®æ¦¡¤ÆURL
+        // æ ¼å¼åŒ–URL
         var url = util.format(config.ApiURL.accessTokenApi, process.env.corpId, process.env.agentSecret1000002);
         console.log("url=" + url);
-        // §PÂ_accessToken.json¬O§_ÁÙ¦³®Ä
-        // µL®Ä®É
+        // åˆ¤æ–·accessToken.jsonæ˜¯å¦é‚„æœ‰æ•ˆ
+        // ç„¡æ•ˆæ™‚
         if (accessTokenJson.directory.access_token === "" || accessTokenJson.directory.expires_time < currentTime) {
             requestGet(url).then(function (data) {
                 console.log("requestGetdata=" + data);
@@ -145,7 +145,7 @@ function getAccessToken() {
                     resolve(result);
                 }
             });
-        // ¦³®Ä®É
+        // æœ‰æ•ˆæ™‚
         } else {
             // return access_token 
             console.log("AccessToken exist:" + JSON.stringify(accessTokenJson.directory) + ",CurrentTime=" + currentTime);
@@ -159,7 +159,7 @@ process.on('unhandledRejection', (reason, p) => {
     // application specific logging, throwing an error, or other logic here
 });
 
-// ¦]¬° express ¹w³]¨« port 3000¡A¦Ó heroku ¤W¹w³]«o¤£¬O¡A­n³z¹L¤U¦Cµ{¦¡Âà´«
+// å› ç‚º express é è¨­èµ° port 3000ï¼Œè€Œ heroku ä¸Šé è¨­å»ä¸æ˜¯ï¼Œè¦é€éä¸‹åˆ—ç¨‹å¼è½‰æ›
 var server = app.listen(process.env.PORT || 443, function () {
     var port = server.address().port;
     console.log("App now running on port", port);
