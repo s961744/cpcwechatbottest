@@ -49,7 +49,7 @@ var job = schedule.scheduleJob('5,35 * * * * *', function () {
                         }
                         break;
                 }
-                if (data == '[]') {
+                if (data.length < 3) {
                     console.log('No messages need to be sent.');
                 }
                 else {
