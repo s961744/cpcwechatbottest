@@ -8,7 +8,8 @@
     https = require("https"),
     util = require('util'),
     fs = require('fs'),
-    schedule = require('node-schedule');
+    schedule = require('node-schedule'),
+    parseString = require('xml2js').parseString;
 
 
 // 排程 1次/30sec (每分鐘的5秒及35秒)
@@ -111,10 +112,6 @@ var app = express();
 var API = wechat.API;
 var api = new API(process.env.corpId, process.env.agentSecret1000002, '1000002');
 
-
-
-
-
 app.get('/', function (req, res) {
     var msg_signature = req.query.msg_signature;
     var timestamp = req.query.timestamp;
@@ -125,24 +122,59 @@ app.get('/', function (req, res) {
     res.send(s.message);
     console.log("s.message=" + s.message);
     
-    var msg = '【耀元】:\nTEST消息发送(简体)\n123456.';
-    var message = {
-        'msgtype': 'text',
-        'text': {
-            'content': msg
-        }
-    };
-    var touser = 'A0012272';
-    var toUsers = {
-        'touser': touser
-    }
-    api.send(toUsers, message, function (err, result) {
-        if (err) {
-            console.log('消息發送失敗:' + JSON.stringify(err));
+    //var msg = '【耀元】:\nTEST消息发送(简体)\n123456.';
+    //var message = {
+    //    'msgtype': 'text',
+    //    'text': {
+    //        'content': msg
+    //    }
+    //};
+    //var touser = 'A0012272';
+    //var toUsers = {
+    //    'touser': touser
+    //}
+    //api.send(toUsers, message, function (err, result) {
+    //    if (err) {
+    //        console.log('消息發送失敗:' + JSON.stringify(err));
 
-        }
+    //    }
+    //});
+});
+
+app.post('/', function (req, res) {
+    var buffer = [];
+    req.on('data', function (data) {
+        buffer.push(data);
     });
- });
+    req.on('end', function () {
+        console.log(Buffer.concat(buffer).toString('utf-8'));
+    });
+});
+
+/**
+ * 接收消息
+ */
+WeChat.prototype.handleMsg = function (req, res) {
+    var buffer = [];
+    //监听 data 事件 用于接收数据
+    req.on('data', function (data) {
+        buffer.push(data);
+    });
+    //监听 end 事件 用于处理接收完成的数据
+    req.on('end', function () {
+        var msgXml = Buffer.concat(buffer).toString('utf-8');
+        //解析xml
+        parseString(msgXml, { explicitArray: false }, function (err, result) {
+            if (!err) {
+                //打印解析结果
+                console.log(result);
+            } else {
+                //打印错误信息
+                console.log(err);
+            }
+        })
+    });
+}
 
 //https get
 function requestGet(url) {

@@ -13,6 +13,7 @@
     "express": "^4.16.2",
     "node-schedule": "^1.3.0",
     "wechat-crypto": "0.0.2",
-    "wechat-enterprise": "^0.1.1"
+    "wechat-enterprise": "^0.1.1",
+    "xml2js": "^0.4.19"
   }
 }
