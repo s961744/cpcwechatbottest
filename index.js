@@ -163,6 +163,7 @@ function handleMsg(req, res) {
                 result = result.xml;
                 var toUser = result.ToUserName; //接收方微信
                 var fromUser = result.FromUserName;//发送仿微信
+                console.log("result=" + result);
                 if (result.MsgType.toLowerCase() === "event") {
                     console.log("Event=" + result.Event);
                     //判断事件类型
