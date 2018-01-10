@@ -142,13 +142,7 @@ app.get('/', function (req, res) {
 });
 
 app.post('/', function (req, res) {
-    var buffer = [];
-    req.on('data', function (data) {
-        buffer.push(data);
-    });
-    req.on('end', function () {
-        console.log(Buffer.concat(buffer).toString('utf-8'));
-    });
+    handleMsg(req, res);
 });
 
 /**
@@ -166,14 +160,32 @@ function handleMsg(req, res) {
         //解析xml
         parseString(msgXml, { explicitArray: false }, function (err, result) {
             if (!err) {
-                //打印解析结果
-                console.log(result);
+                result = result.xml;
+                var toUser = result.ToUserName; //接收方微信
+                var fromUser = result.FromUserName;//发送仿微信
+                //判断事件类型
+                switch (result.Event.toLowerCase()) {
+                    case 'subscribe':
+                        //回复消息
+                        res.send(txtMsg(fromUser, toUser, '欢迎关注敬鵬企业号'));
+                        break;
+                }
             } else {
                 //打印错误信息
                 console.log(err);
             }
         })
     });
+}
+
+//回复文本消息
+function txtMsg(toUser, fromUser, content) {
+    var xmlContent = "<xml><ToUserName><![CDATA[" + toUser + "]]></ToUserName>";
+    xmlContent += "<FromUserName><![CDATA[" + fromUser + "]]></FromUserName>";
+    xmlContent += "<CreateTime>" + new Date().getTime() + "</CreateTime>";
+    xmlContent += "<MsgType><![CDATA[text]]></MsgType>";
+    xmlContent += "<Content><![CDATA[" + content + "]]></Content></xml>";
+    return xmlContent;
 }
 
 //https get
