@@ -163,17 +163,29 @@ function handleMsg(req, res) {
                 result = result.xml;
                 var toUser = result.ToUserName; //接收方微信
                 var fromUser = result.FromUserName;//发送仿微信
-                console.log("Event=" + result.Event);
-                //判断事件类型
-                switch (result.Event.toLowerCase()) {
-                    case 'subscribe':
-                        //回复消息
-                        res.send(txtMsg(fromUser, toUser, '欢迎关注敬鵬企业号'));
-                        break;
+                if (result.MsgType.toLowerCase() === "event") {
+                    console.log("Event=" + result.Event);
+                    //判断事件类型
+                    switch (result.Event.toLowerCase()) {
+                        case 'subscribe':
+                            //回复消息
+                            res.send(txtMsg(fromUser, toUser, '欢迎关注敬鵬企业号'));
+                            break;
+                    }
                 }
-            } else {
-                //打印错误信息
-                console.log(err);
+                else if (result.MsgType.toLowerCase() === "text") {
+                    res.send(msg.txtMsg(fromUser, toUser, 'Hello ！這是來自敬鵬微信企业號的訊息'));
+                    var post_data = JSON.parse(JSON.stringify('{"touser": "' + fromUser + '", "msgtype": "text", "agentid": 1000002,"text" : {"content" : "' + result.Content + '"},"safe": 0}'));
+                    console.log(JSON.stringify(post_data));
+
+                    getAccessToken().then(function (data) {
+                        postMsg(accessTokenJson.directory.access_token, post_data);
+                    });
+                }
+                else {
+                    //打印错误信息
+                    console.log(err);
+                }
             }
         })
     });
