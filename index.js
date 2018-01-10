@@ -154,7 +154,7 @@ app.post('/', function (req, res) {
 /**
  * 接收消息
  */
-WeChat.prototype.handleMsg = function (req, res) {
+function handleMsg(req, res) {
     var buffer = [];
     //监听 data 事件 用于接收数据
     req.on('data', function (data) {
