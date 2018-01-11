@@ -84,7 +84,7 @@ var job = schedule.scheduleJob('5,35 * * * * *', function () {
                             try {
                                 var post_data = JSON.parse(JSON.stringify('{"touser": "' + user_id + '", "msgtype": "text", "agentid": 1000002,"text" : {"content" : "' + message + '"},"safe": 0}'));
                                 console.log("post_data=" + JSON.stringify(post_data));
-                                wechatApp.getAccessToken("directory", process.env.agentSecret1000002).then(function (data) {
+                                wechatApp.getAccessToken("directory", process.env.directorySecret).then(function (data) {
                                     wechatApp.postMsg(post_data).then(function () {
                                         // 設定PUT RESTful API連接參數
                                         var paraPut = '?strMessageId=' + message_id;
