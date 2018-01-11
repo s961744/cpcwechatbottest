@@ -160,6 +160,8 @@ WeChat.prototype.getAccessToken = function (secretType,secret){
         // 目前時間
         var currentTime = new Date().getTime();
         // 格式化URL
+        console.log("TEST");
+        console.log(config.ApiURL.accessTokenApi);
         var url = util.format(config.ApiURL.accessTokenApi, process.env.corpId, secret);
         // 判斷accessToken是否還有效
         // 已過期時重取
