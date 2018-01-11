@@ -75,7 +75,6 @@ var job = schedule.scheduleJob('5,35 * * * * *', function () {
                     console.log('No messages need to be sent.');
                 }
                 else {
-                    console.log(data);
                     try {
                         var jdata = JSON.parse(data);
                         jdata.forEach(function (row) {
