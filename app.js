@@ -1,5 +1,6 @@
 const express = require('express'), //express 框架 
       http = require("http"),
+      schedule = require('node-schedule'),
       wechat  = require('./wechat/wechat'), 
       config = require('./config');//引入配置文件
        
