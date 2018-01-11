@@ -86,7 +86,7 @@ var job = schedule.scheduleJob('5,35 * * * * *', function () {
                                 var post_data = JSON.parse(JSON.stringify('{"touser": "' + user_id + '", "msgtype": "text", "agentid": 1000002,"text" : {"content" : "' + message + '"},"safe": 0}'));
                                 console.log(JSON.stringify(post_data));
 
-                                getAccessToken().then(function (data) {
+                                wechat.getAccessToken().then(function (data) {
                                     wechat.postMsg(post_data);
                                 });
                                 // 設定PUT RESTful API連接參數
