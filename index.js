@@ -161,6 +161,10 @@ function handleMsg(req, res) {
         parseString(msgXml, { explicitArray: false }, function (err, result) {
             if (!err) {
                 result = result.xml;
+                if (req.query.encrypt_type == 'aes') {
+                    //对加密数据解密
+                    result = cryptoGraphy.decryptMsg(result.Encrypt);
+                }
                 var toUser = result.ToUserName; //接收方微信
                 var fromUser = result.FromUserName;//发送仿微信
                 console.log("result=" + result);
@@ -244,7 +248,7 @@ function requestGet(url) {
 function postMsg(access_token, post_data) {
     return new Promise(function (resolve, reject) {
         // Build the post string from an object
-        //post_data = JSON.parse(JSON.stringify('{"touser": "A0012272", "msgtype": "text", "agentid": 1000002,"text" : {"content" : "TEST消息發送(繁體)\n123456."},"safe": 0}'));
+        // post_data = JSON.parse(JSON.stringify('{"touser": "A0012272", "msgtype": "text", "agentid": 1000002,"text" : {"content" : "TEST消息發送(繁體)\n123456."},"safe": 0}'));
         // An object of options to indicate where to post to
         var paraPost = '?access_token=' + access_token;
         var post_options = {
