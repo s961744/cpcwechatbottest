@@ -86,28 +86,29 @@ var job = schedule.scheduleJob('5,35 * * * * *', function () {
                                 var post_data = JSON.parse(JSON.stringify('{"touser": "' + user_id + '", "msgtype": "text", "agentid": 1000002,"text" : {"content" : "' + message + '"},"safe": 0}'));
                                 console.log(JSON.stringify(post_data));
                                 wechatApp.getAccessToken("directory", process.env.agentSecret1000002).then(function (data) {
-                                    wechat.postMsg(post_data);
+                                    wechat.postMsg(post_data).then(function () {
+                                        // 設定PUT RESTful API連接參數
+                                        var paraPut = '?strMessageId=' + message_id;
+                                        var optionsPut = {
+                                            host: '116.50.39.201',
+                                            port: 7102,
+                                            path: '/WechatRESTful/resources/WechatRESTfulTest' + paraPut,
+                                            method: 'PUT'
+                                        };
+                                        try {
+                                            // 發送後寫入actual_send_time
+                                            http.request(optionsPut, function (resPUT) {
+                                                resPUT.setEncoding('utf8');
+                                                resPUT.on('data', function (chunkPUT) {
+                                                    console.log(chunkPUT);
+                                                });
+                                            }).end();
+                                        }
+                                        catch (e) {
+                                            return console.log("http request fail:" + JSON.stringify(optionsPut));
+                                        }
+                                    });
                                 });
-                                // 設定PUT RESTful API連接參數
-                                var paraPut = '?strMessageId=' + message_id;
-                                var optionsPut = {
-                                    host: '116.50.39.201',
-                                    port: 7102,
-                                    path: '/WechatRESTful/resources/WechatRESTfulTest' + paraPut,
-                                    method: 'PUT'
-                                };
-                                try {
-                                    // 發送後寫入actual_send_time
-                                    http.request(optionsPut, function (resPUT) {
-                                        resPUT.setEncoding('utf8');
-                                        resPUT.on('data', function (chunkPUT) {
-                                            console.log(chunkPUT);
-                                        });
-                                    }).end();
-                                }
-                                catch (e) {
-                                    return console.log("http request fail:" + JSON.stringify(optionsPut));
-                                }
                             }
                             catch (e) {
                                 return console.log(e);
