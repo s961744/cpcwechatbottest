@@ -2,11 +2,7 @@
 
 const
     https = require('https'),
-    util = require('util'),
-    wechat = require('./wechat'),
-    config = require('./config');
-
-var wechatApp = new wechat(config); //实例wechat 模块
+    util = require('util');
 
 /**
  * 讀取成員

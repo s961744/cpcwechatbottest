@@ -294,7 +294,7 @@ WeChat.prototype.handleMsg = function(req,res){
                             break;
                         case '管理員':
                             this.getAccessToken("directory", directorySecret).then(function (data) {
-                                user.getUser(data, "A0012272");
+                                user.getUser(config, data, "A0012272");
                             });    
                             
                         default:
