@@ -186,7 +186,7 @@ WeChat.prototype.getAccessToken = function (secretType,secret){
                     //尚未過期，直接返回    
                 } else {
                     //将本地存储的 access_token 返回
-                    resolve(accessTokenJson.access_token);
+                    resolve(accessTokenJson.directory.access_token);
                 }
                 break;
             case 'agent1000002':
