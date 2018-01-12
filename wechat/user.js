@@ -3,16 +3,15 @@
 const
     https = require('https'),
     util = require('util'),
-    wechatApp = require('./wechat').WeChat,
+    WeChat = require('./wechat'),
     config = require('./../config');
-
 /**
  * 讀取成員
  * @param {String} access_token
  * @param {String} userid
  */
 exports.getUser = function (userid) {
-    wechatApp.getAccessToken("directory", process.env.directorySecret).then(function (data) {
+    WeChat.getAccessToken("directory", process.env.directorySecret).then(function (data) {
         // 設定PUT RESTful API連接參數
         var url = util.format(config.ApiURL.getUserAPI, data, userid);
         requestGet(url).then(function (data) {
