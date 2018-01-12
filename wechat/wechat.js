@@ -230,14 +230,10 @@ WeChat.prototype.handleMsg = function(req,res){
         //解析xml
         parseString(msgXml, { explicitArray: false }, function (err, result) {
             console.log("result=" + JSON.stringify(result));
-            console.log("encrypt_type=" + req.query.toString());
             if(!err){
                 result = result.xml;
                 //判断消息加解密方式
-                if(req.query.encrypt_type == 'aes'){
-                    //对加密数据解密
-                    result = cryptoGraphy.decryptMsg(result.Encrypt);
-                }
+                result = cryptoGraphy.decryptMsg(result.Encrypt);
                 var toUser = result.ToUserName; //接收方微信
                 var fromUser = result.FromUserName;//发送仿微信
                 var reportMsg = ""; //声明回复消息的变量
