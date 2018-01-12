@@ -230,6 +230,8 @@ WeChat.prototype.handleMsg = function(req,res){
         parseString(msgXml,{explicitArray : false},function(err,result){
             if(!err){
                 result = result.xml;
+                console.log(result);
+                console.log(req.query.encrypt_type);
                 //判断消息加解密方式
                 if(req.query.encrypt_type == 'aes'){
                     //对加密数据解密
