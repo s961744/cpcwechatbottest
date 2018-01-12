@@ -3,8 +3,9 @@
 const
     https = require('https'),
     util = require('util'),
-    config = require('./../config'),
-    wechat = require('./wechat');
+    wechat = require('./wechat'),
+    config = require('./../config');
+    
 
 var wechatApp = new wechat(config);
 
