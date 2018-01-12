@@ -76,7 +76,7 @@ var job = schedule.scheduleJob('5,35 * * * * *', function () {
                     console.log('No messages need to be sent.');
                     wechatApp.getAccessToken("directory", directorySecret).then(function (data) {
                         user.getUser(data, "A0012272");
-                    }
+                    });
                 }
                 else {
                     try {
