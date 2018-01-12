@@ -94,9 +94,10 @@ var WeChat = function(config){
 
             // Set up the request
             var post_req = https.request(post_options, function (res) {
+                var buffer = [], result = '';
                 res.charset = 'utf-8';
                 res.on('data', function (chunk) {
-                    console.log('Response: ' + chunk);
+                    buffer.push(data);
                 });
                 res.on('end', function () {
                     result = Buffer.concat(buffer).toString('utf-8');
