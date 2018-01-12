@@ -5,9 +5,6 @@ const
     util = require('util'),
     wechat = require('./wechat'),
     config = require('./../config');
-    
-
-var wechatApp = new wechat(config);
 
 /**
  * 讀取成員
@@ -15,6 +12,7 @@ var wechatApp = new wechat(config);
  * @param {String} userid
  */
 exports.getUser = function (userid) {
+    var wechatApp = new wechat(config);
     wechatApp.getAccessToken("directory", process.env.directorySecret).then(function (data) {
         // 設定PUT RESTful API連接參數
         var url = util.format(config.ApiURL.getUserAPI, data, userid);
