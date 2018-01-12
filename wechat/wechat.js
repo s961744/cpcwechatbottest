@@ -167,18 +167,21 @@ WeChat.prototype.getAccessToken = function (secretType,secret){
         console.log("url=" + url + ",secretType=" + secretType);
         switch (secretType) {
             case 'directory':
-                if (accessTokenJson.directory.access_token === "" || accessTokenJson.directory.expires_time < currentTime) {
+                
+                break;
+            case 'agent1000002':
+                if (accessTokenJson.agent1000002.access_token === "" || accessTokenJson.agent1000002.expires_time < currentTime) {
                     that.requestGet(url).then(function (data) {
                         var result = JSON.parse(data);
                         if (result.errcode == "0") {
                             console.log("accessToken=" + result.access_token);
-                            accessTokenJson.directory.access_token = result.access_token;
-                            accessTokenJson.directory.expires_time = new Date().getTime() + (parseInt(result.expires_in) - 200) * 1000;
+                            accessTokenJson.agent1000002.access_token = result.access_token;
+                            accessTokenJson.agent1000002.expires_time = new Date().getTime() + (parseInt(result.expires_in) - 200) * 1000;
                             // 更新 accessToken.json
                             fs.writeFile('./wechat/access_token.json', JSON.stringify(accessTokenJson));
-                            console.log("update accessToken:" + JSON.stringify(accessTokenJson.directory));
+                            console.log("update accessToken:" + JSON.stringify(accessTokenJson.agent1000002));
                             // return access_token 
-                            resolve(accessTokenJson.directory.access_token);
+                            resolve(accessTokenJson.agent1000002.access_token);
                         } else {
                             // return error msg
                             resolve(result);
@@ -187,10 +190,8 @@ WeChat.prototype.getAccessToken = function (secretType,secret){
                     //尚未過期，直接返回    
                 } else {
                     //将本地存储的 access_token 返回
-                    resolve(accessTokenJson.directory.access_token);
+                    resolve(accessTokenJson.agent1000002.access_token);
                 }
-                break;
-            case 'agent1000002':
                 break;
             default:
                 
