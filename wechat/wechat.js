@@ -262,7 +262,7 @@ WeChat.prototype.handleMsg = function(req,res){
                     switch (result.Content) {
                         case '文字':
                             var content = "Echo:" + result.Content;
-                            reportMsg = msg.txtMsg(fromUser, toUser, Content);
+                            reportMsg = msg.txtMsg(fromUser, toUser, content);
                             break;
                         case '圖文選單':
                             var contentArr = [
