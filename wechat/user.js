@@ -5,6 +5,7 @@ const
     util = require('util'),
     WeChat = require('./wechat'),
     config = require('./../config');
+var wechatApp = new WeChat(config);
 /**
  * 讀取成員
  * @param {String} access_token
