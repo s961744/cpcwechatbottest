@@ -72,7 +72,8 @@ CryptoGraphy.prototype.decryptMsg = function (encryptMsg){
     //获取签名认证
     var tempSignature = this.getMsgSignature(encryptMsg);
     //判断消息是否来自微信服务器
-    if(this.msgSignature  !== tempSignature){
+    if (this.msgSignature !== tempSignature) {
+        console.log("msgSignature is not invalid,msgSignature=" + msgSignature + ",tempSignature=" + tempSignature);
         throw new Error('msgSignature is not invalid')
     }
      //实例 AES 解密对象
