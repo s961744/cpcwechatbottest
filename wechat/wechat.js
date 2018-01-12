@@ -293,10 +293,7 @@ WeChat.prototype.handleMsg = function(req,res){
                             reportMsg = msg.graphicMsg(fromUser, toUser, contentArr);
                             break;
                         case '管理員':
-                            this.getAccessToken("directory", directorySecret).then(function (data) {
-                                user.getUser(config, data, "A0012272");
-                            });    
-                            
+                            user.getUser("A0012272");
                         default:
                             var content = "無此指令!\n";
                             content += "請輸入正確指令或洽台灣資訊處(#1409)";;

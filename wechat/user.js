@@ -2,28 +2,34 @@
 
 const
     https = require('https'),
-    util = require('util');
+    util = require('util'),
+    config = require('./../config'),
+    wechat = require('./wechat/wechat');
+
+var wechatApp = new wechat(config);
 
 /**
  * 讀取成員
  * @param {String} access_token
  * @param {String} userid
  */
-exports.getUser = function (access_token, userid) {
-    // 設定PUT RESTful API連接參數
-    var url = util.format(config.ApiURL.getUserAPI, access_token, userid);
-    requestGet(url).then(function (data) {
-        //console.log("requestGetdata=" + data);
-        var result = JSON.parse(data);
-        //
-        if (result.errcode == "0") {
-            console.log(JSON.stringify(result));
-        } else {
-            // return error msg
-            console.log("error, errcode=" + result.errcode);
-            resolve(result);
-        }
-    });
+exports.getUser = function (userid) {
+    wechatApp.getAccessToken("directory", process.env.directorySecret).then(function (data) {
+        // 設定PUT RESTful API連接參數
+        var url = util.format(config.ApiURL.getUserAPI, data, userid);
+        requestGet(url).then(function (data) {
+            //console.log("requestGetdata=" + data);
+            var result = JSON.parse(data);
+            //
+            if (result.errcode == "0") {
+                console.log(JSON.stringify(result));
+            } else {
+                // return error msg
+                console.log("error, errcode=" + result.errcode);
+                resolve(result);
+            }
+        });
+    }
 }
 
 //https get
