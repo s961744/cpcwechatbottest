@@ -163,13 +163,13 @@ WeChat.prototype.getAccessToken = function (secretType,secret){
         var url = util.format(that.config.ApiURL.accessTokenApi, process.env.corpId, secret);
         // 判斷accessToken是否還有效
         // 已過期時重取
-        console.log("url=" + url + "secretType=" + secretType);
+        console.log("url=" + url + ",secretType=" + secretType);
         switch (secretType) {
             case 'directory':
                 if (accessTokenJson.directory.access_token === "" || accessTokenJson.directory.expires_time < currentTime) {
                     that.requestGet(url).then(function (data) {
                         var result = JSON.parse(data);
-                        if (data.indexOf("errcode") < 0) {
+                        if (result.errcode == "0") {
                             accessTokenJson.access_token = result.access_token;
                             accessTokenJson.expires_time = new Date().getTime() + (parseInt(result.expires_in) - 200) * 1000;
                             // 更新 accessToken.json
