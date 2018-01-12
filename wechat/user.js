@@ -12,6 +12,7 @@ const
 exports.getUser = function (accessToken, userid) {  
     // 設定PUT RESTful API連接參數
     var url = util.format(config.ApiURL.getUserAPI, accessToken, userid);
+    console.log(url);
     requestGet(url).then(function (data) {
         //console.log("requestGetdata=" + data);
         var result = JSON.parse(data);
