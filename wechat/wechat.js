@@ -227,11 +227,12 @@ WeChat.prototype.handleMsg = function(req,res){
     req.on('end',function(){
         var msgXml = Buffer.concat(buffer).toString('utf-8');
         //解析xml
-        parseString(msgXml,{explicitArray : false},function(err,result){
+        parseString(msgXml, { explicitArray: false }, function (err, result) {
+            console.log("err=" + err);
+            console.log("result=" + result);
+            console.log("encrypt_type=" + req.query.encrypt_type);
             if(!err){
                 result = result.xml;
-                console.log(result);
-                console.log(req.query.encrypt_type);
                 //判断消息加解密方式
                 if(req.query.encrypt_type == 'aes'){
                     //对加密数据解密
