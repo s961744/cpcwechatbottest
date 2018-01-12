@@ -80,6 +80,7 @@ var WeChat = function(config){
     this.postMsg = function (post_data){
         return new Promise(function (resolve, reject) {
             // post options
+            console.log("accessTokenJson.directory.access_token=" + accessTokenJson.directory.access_token);
             var paraPost = '?access_token=' + accessTokenJson.directory.access_token;
             var post_options = {
                 host: 'qyapi.weixin.qq.com',
