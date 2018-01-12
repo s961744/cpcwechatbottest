@@ -170,7 +170,7 @@ WeChat.prototype.getAccessToken = function (secretType,secret){
                     that.requestGet(url).then(function (data) {
                         var result = JSON.parse(data);
                         if (result.errcode == "0") {
-                            console.log("accessToken=" + result.access_token));
+                            console.log("accessToken=" + result.access_token);
                             accessTokenJson.access_token = result.access_token;
                             accessTokenJson.expires_time = new Date().getTime() + (parseInt(result.expires_in) - 200) * 1000;
                             // 更新 accessToken.json
