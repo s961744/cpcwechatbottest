@@ -29,7 +29,7 @@ exports.getUser = function (userid) {
                 resolve(result);
             }
         });
-    }
+    });
 }
 
 //https get
