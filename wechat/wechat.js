@@ -11,7 +11,6 @@ const
     accessTokenJson = require('./access_token'), // access_token.json
     menus = require('./menus'), // 微信選單
     msg = require('./msg'),// 訊息處理
-    user = require('./user'),// 成員處理
     CryptoGraphy = require('./cryptoGraphy'); // 微信消息加解密模組
 
 /**
@@ -320,19 +319,22 @@ WeChat.prototype.handleMsg = function(req,res){
  */
 WeChat.prototype.getUser = function (accessToken, userid) {
     var that = this;
-    var url = util.format(that.config.ApiURL.getUserAPI, accessToken, userid);
-    console.log("url=" + url);
-    that.requestGet(url).then(function (data) {
-        //console.log("requestGetdata=" + data);
-        var result = JSON.parse(data);
-        //
-        if (result.errcode == "0") {
-            console.log(JSON.stringify(result));
-        } else {
-            // return error msg
-            console.log("error, errcode=" + result.errcode);
-            resolve(result);
-        }
+    return new Promise(function (resolve, reject) {
+        console.log("getUserAPI=" + that.config.ApiURL.getUserAPI);
+        var url = util.format(that.config.ApiURL.getUserAPI, accessToken, userid);
+        console.log("url=" + url);
+        that.requestGet(url).then(function (data) {
+            //console.log("requestGetdata=" + data);
+            var result = JSON.parse(data);
+            //
+            if (result.errcode == "0") {
+                console.log(JSON.stringify(result));
+            } else {
+                // return error msg
+                console.log("error, errcode=" + result.errcode);
+                resolve(result);
+            }
+        });
     });
 }
 
