@@ -86,6 +86,7 @@ CryptoGraphy.prototype.decryptMsg = function (encryptMsg){
     //对微信消息进行处理
     deEncryptedMsg = deEncryptedMsg.slice(20, -pad).replace(/<\/xml>.*/,'</xml>');
     //讲解密后的XML 转为 JSON 对象
+    console.log(JSON.stringify(this.parseXmlToJSON(deEncryptedMsg)));
     return this.parseXmlToJSON(deEncryptedMsg);
 }
 
