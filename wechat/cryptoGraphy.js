@@ -16,7 +16,7 @@ var CryptoGraphy = function(config,req){
     //设置 CryptoGraphy 对象属性 appID
     this.appID = config.appID;
     //设置 CryptoGraphy 对象属性 encodingAESKey
-    this.encodingAESKey = new Buffer(config.encodingAESKey + '=','base64');
+    this.encodingAESKey = new Buffer(process.env.encodingAESKey + '=', 'base64');
     //设置 CryptoGraphy 对象属性 iv
     this.iv = this.encodingAESKey.slice(0,16);
     //设置 CryptoGraphy 对象属性 msgSignature
@@ -100,9 +100,9 @@ CryptoGraphy.prototype.encryptMsg = function(xmlMsg){
     var buf = new Buffer(4);
     buf.writeUInt32BE(text.length);
     //进行PKCS7补位
-    var pack = KCS7Encoder(20 + text.length + this.appID.length);
+    var pack = KCS7Encoder(20 + text.length + this.corpId.length);
     //拼接要加密的字符串
-    var content = random + buf.toString('binary') + text.toString('binary') + this.appID + pack;
+    var content = random + buf.toString('binary') + text.toString('binary') + this.corpId + pack;
     //实例 AES 加密对象
     var cipheriv = crypto.createCipheriv(this.aesModel,this.encodingAESKey,this.iv);
     //设置自定填充数据为 false
