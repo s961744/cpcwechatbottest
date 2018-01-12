@@ -77,11 +77,10 @@ var WeChat = function(config){
      * 消息發送
      * @param {JSON} post_data 
      */
-    this.postMsg = function (post_data){
+    this.postMsg = function (access_token, post_data){
         return new Promise(function (resolve, reject) {
             // post options
-            console.log("accessTokenJson.directory.access_token=" + accessTokenJson.directory.access_token);
-            var paraPost = '?access_token=' + accessTokenJson.directory.access_token;
+            var paraPost = '?access_token=' + access_token;
             var post_options = {
                 host: 'qyapi.weixin.qq.com',
                 port: '443',
