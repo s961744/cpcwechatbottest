@@ -3,10 +3,8 @@
 const
     https = require('https'),
     util = require('util'),
-    WeChat = require('./wechat').WeChat,
+    wechatApp = require('./wechat'),
     config = require('./../config');
-
-var wechatApp = new WeChat(config);
 
 /**
  * 讀取成員
