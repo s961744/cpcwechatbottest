@@ -3,30 +3,26 @@
 const
     https = require('https'),
     util = require('util'),
-    WeChat = require('./wechat'),
-    config = require('./../config');
-var wechatApp = new WeChat(config);
+    config = require('./config');//引入配置文件
 /**
  * 讀取成員
  * @param {String} access_token
  * @param {String} userid
  */
-exports.getUser = function (userid) {
-    WeChat.getAccessToken("directory", process.env.directorySecret).then(function (data) {
-        // 設定PUT RESTful API連接參數
-        var url = util.format(config.ApiURL.getUserAPI, data, userid);
-        requestGet(url).then(function (data) {
-            //console.log("requestGetdata=" + data);
-            var result = JSON.parse(data);
-            //
-            if (result.errcode == "0") {
-                console.log(JSON.stringify(result));
-            } else {
-                // return error msg
-                console.log("error, errcode=" + result.errcode);
-                resolve(result);
-            }
-        });
+exports.getUser = function (accessToken, userid) {  
+    // 設定PUT RESTful API連接參數
+    var url = util.format(config.ApiURL.getUserAPI, accessToken, userid);
+    requestGet(url).then(function (data) {
+        //console.log("requestGetdata=" + data);
+        var result = JSON.parse(data);
+        //
+        if (result.errcode == "0") {
+            console.log(JSON.stringify(result));
+        } else {
+            // return error msg
+            console.log("error, errcode=" + result.errcode);
+            resolve(result);
+        }
     });
 }
 
@@ -67,3 +63,4 @@ function requestGet(url) {
         });
     });
 }
+module.exports = User;

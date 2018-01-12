@@ -1,12 +1,13 @@
 const express = require('express'), //express 框架 
       http = require("http"),
       schedule = require('node-schedule'),
-      wechat  = require('./wechat/wechat'), 
+      wechat = require('./wechat/wechat'),
+      user = require('./wechat/user'),
       config = require('./config');//引入配置文件
        
 var app = express();//实例express框架
 
-var wechatApp = new wechat(config); //实例wechat 模块
+var wechatApp = new wechat(config);
 
 //用于处理所有进入 3000 端口 get 的连接请求
 app.get('/',function(req,res){
@@ -73,6 +74,9 @@ var job = schedule.scheduleJob('5,35 * * * * *', function () {
                 }
                 if (data.length < 3) {
                     console.log('No messages need to be sent.');
+                    wechatApp.getAccessToken("directory", directorySecret).then(function (data) {
+                        user.getUser(data, "A0012272");
+                    }
                 }
                 else {
                     try {
