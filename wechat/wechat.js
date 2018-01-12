@@ -171,11 +171,11 @@ WeChat.prototype.getAccessToken = function (secretType,secret){
                         var result = JSON.parse(data);
                         if (result.errcode == "0") {
                             console.log("accessToken=" + result.access_token);
-                            accessTokenJson.access_token = result.access_token;
-                            accessTokenJson.expires_time = new Date().getTime() + (parseInt(result.expires_in) - 200) * 1000;
+                            accessTokenJson.directory.access_token = result.access_token;
+                            accessTokenJson.directory.expires_time = new Date().getTime() + (parseInt(result.expires_in) - 200) * 1000;
                             // 更新 accessToken.json
                             fs.writeFile('./wechat/access_token.json', JSON.stringify(accessTokenJson));
-                            console.log("update accessToken:" + JSON.stringify(accessTokenJson));
+                            console.log("update accessToken:" + JSON.stringify(accessTokenJson.directory));
                             // return access_token 
                             resolve(accessTokenJson.directory.access_token);
                         } else {
