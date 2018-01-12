@@ -229,8 +229,8 @@ WeChat.prototype.handleMsg = function(req,res){
 
         //解析xml
         parseString(msgXml, { explicitArray: false }, function (err, result) {
-            console.log("result=" + result.toString());
-            console.log("encrypt_type=" + req.query.encrypt_type.toString());
+            console.log("result=" + JSON.stringify(result));
+            console.log("encrypt_type=" + req.query.toString());
             if(!err){
                 result = result.xml;
                 //判断消息加解密方式
