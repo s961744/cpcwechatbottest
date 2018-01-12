@@ -63,4 +63,3 @@ function requestGet(url) {
         });
     });
 }
-module.exports = User;
