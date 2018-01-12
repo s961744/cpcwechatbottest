@@ -314,5 +314,27 @@ WeChat.prototype.handleMsg = function(req,res){
     });
 }
 
+/**
+ * 讀取成員
+ * @param {Request} userid
+ */
+WeChat.prototype.getUser = function (accessToken, userid) {
+    var that = this;
+    var url = util.format(that.config.ApiURL.getUserAPI, accessToken, userid);
+    console.log(url);
+    requestGet(url).then(function (data) {
+        //console.log("requestGetdata=" + data);
+        var result = JSON.parse(data);
+        //
+        if (result.errcode == "0") {
+            console.log(JSON.stringify(result));
+        } else {
+            // return error msg
+            console.log("error, errcode=" + result.errcode);
+            resolve(result);
+        }
+    });
+}
+
 //暴露可供外部访问的接口
 module.exports = WeChat;
