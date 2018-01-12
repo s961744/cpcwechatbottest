@@ -287,7 +287,7 @@ WeChat.prototype.handleMsg = function(req,res){
                     }
                 }
                 //判断消息加解密方式，如果未加密则使用明文，对明文消息进行加密
-                reportMsg = req.query.encrypt_type == 'aes' ? cryptoGraphy.encryptMsg(reportMsg) : reportMsg ;
+                reportMsg = cryptoGraphy.encryptMsg(reportMsg);
                 //返回给微信服务器
                 res.send(reportMsg);
 
