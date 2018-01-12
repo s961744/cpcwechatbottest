@@ -1,5 +1,6 @@
 ﻿{
   "ApiURL": {
-    "accessTokenApi": "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=%s&corpsecret=%s"
+    "accessTokenApi": "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=%s&corpsecret=%s",
+    "getUserApi": "https://qyapi.weixin.qq.com/cgi-bin/user/get?access_token=%s&userid=%s"
   }
 }

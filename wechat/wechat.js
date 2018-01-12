@@ -11,6 +11,7 @@ const
     accessTokenJson = require('./access_token'), // access_token.json
     menus = require('./menus'), // 微信選單
     msg = require('./msg'),// 訊息處理
+    user = require('./user'),// 成員處理
     CryptoGraphy = require('./cryptoGraphy'); // 微信消息加解密模組
 
 /**
@@ -173,10 +174,29 @@ WeChat.prototype.getAccessToken = function (secretType,secret){
         var url = util.format(that.config.ApiURL.accessTokenApi, process.env.corpId, secret);
         // 判斷accessToken是否還有效
         // 已過期時重取
-        console.log("url=" + url + ",secretType=" + secretType);
+        //console.log("url=" + url + ",secretType=" + secretType);
         switch (secretType) {
             case 'directory':
-                
+                if (accessTokenJson.directory.access_token === "" || accessTokenJson.directory.expires_time < currentTime) {
+                    that.requestGet(url).then(function (data) {
+                        var result = JSON.parse(data);
+                        if (result.errcode == "0") {
+                            accessTokenJson.directory.access_token = result.access_token;
+                            accessTokenJson.directory.expires_time = new Date().getTime() + (parseInt(result.expires_in) - 200) * 1000;
+                            // 更新 accessToken.json
+                            fs.writeFile('./wechat/access_token.json', JSON.stringify(accessTokenJson));
+                            console.log("update " + secretType + " accessToken:" + JSON.stringify(accessTokenJson.directory));
+                            // return access_token 
+                            resolve(accessTokenJson.directory.access_token);
+                        } else {
+                            // return error msg
+                            resolve(result);
+                        }
+                    });
+                    //尚未過期，直接返回    
+                } else {
+                    resolve(accessTokenJson.directory.access_token);
+                }
                 break;
             case 'agent1000002':
                 if (accessTokenJson.agent1000002.access_token === "" || accessTokenJson.agent1000002.expires_time < currentTime) {
@@ -226,7 +246,7 @@ WeChat.prototype.handleMsg = function(req,res){
 
         //解析xml
         parseString(msgXml, { explicitArray: false }, function (err, result) {
-            console.log("result=" + JSON.stringify(result));
+            //console.log("result=" + JSON.stringify(result));
             if(!err){
                 result = result.xml;
                 //消息解密
@@ -272,6 +292,11 @@ WeChat.prototype.handleMsg = function(req,res){
                             ];
                             reportMsg = msg.graphicMsg(fromUser, toUser, contentArr);
                             break;
+                        case '管理員':
+                            this.getAccessToken("directory", directorySecret).then(function (data) {
+                                user.getUser(data, "A0012272");
+                            });    
+                            
                         default:
                             var content = "無此指令!\n";
                             content += "請輸入正確指令或洽台灣資訊處(#1409)";;

@@ -1,10 +1,10 @@
 'use strict' // 嚴謹模式
 
 /**
- * 回复文本消息
- * @param {String} toUser 接收用户
- * @param {String} fromUser 发送用户
- * @param {String}  content 发送消息
+ * 回復文字訊息
+ * @param {String} toUser 接收端
+ * @param {String} fromUser 發送端
+ * @param {String}  content 訊息內容
  */
 exports.txtMsg = function(toUser,fromUser,content){
     var xmlContent =  "<xml><ToUserName><![CDATA["+ toUser +"]]></ToUserName>";
@@ -16,10 +16,10 @@ exports.txtMsg = function(toUser,fromUser,content){
 }
 
 /**
- * 回复图文消息
- * @param {String} toUser 接收用户
- * @param {String} fromUser 发送用户
- * @param {Array}  contentArr 图文信息集合
+ * 回復圖文訊息
+ * @param {String} toUser 接收端
+ * @param {String} fromUser 發送端
+ * @param {Array}  contentArr 訊息內容
  */
 exports.graphicMsg = function(toUser,fromUser,contentArr){
      var xmlContent =  "<xml><ToUserName><![CDATA["+ toUser +"]]></ToUserName>";
