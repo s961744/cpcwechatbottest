@@ -3,7 +3,7 @@
 const
     https = require('https'),
     util = require('util'),
-    config = require('./config');//引入配置文件
+    config = require('./../config');//引入配置文件
 /**
  * 讀取成員
  * @param {String} access_token
