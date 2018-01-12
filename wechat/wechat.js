@@ -226,9 +226,9 @@ WeChat.prototype.handleMsg = function(req,res){
     //监听 end 事件 用于处理接收完成的数据
     req.on('end',function(){
         var msgXml = Buffer.concat(buffer).toString('utf-8');
+
         //解析xml
         parseString(msgXml, { explicitArray: false }, function (err, result) {
-            console.log("err=" + err.toString());
             console.log("result=" + result.toString());
             console.log("encrypt_type=" + req.query.encrypt_type.toString());
             if(!err){
