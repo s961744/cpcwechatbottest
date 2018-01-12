@@ -98,6 +98,15 @@ var WeChat = function(config){
                 res.on('data', function (chunk) {
                     console.log('Response: ' + chunk);
                 });
+                res.on('end', function () {
+                    result = Buffer.concat(buffer).toString('utf-8');
+                    resolve(result);
+                })
+            })
+            //监听错误事件
+            .on('error', function (err) {
+                console.log(err);
+                reject(err);
             });
 
             // post the data
@@ -173,12 +182,11 @@ WeChat.prototype.getAccessToken = function (secretType,secret){
                     that.requestGet(url).then(function (data) {
                         var result = JSON.parse(data);
                         if (result.errcode == "0") {
-                            console.log("accessToken=" + result.access_token);
                             accessTokenJson.agent1000002.access_token = result.access_token;
                             accessTokenJson.agent1000002.expires_time = new Date().getTime() + (parseInt(result.expires_in) - 200) * 1000;
                             // 更新 accessToken.json
                             fs.writeFile('./wechat/access_token.json', JSON.stringify(accessTokenJson));
-                            console.log("update accessToken:" + JSON.stringify(accessTokenJson.agent1000002));
+                            console.log("update " + secretType + " accessToken:" + JSON.stringify(accessTokenJson.agent1000002));
                             // return access_token 
                             resolve(accessTokenJson.agent1000002.access_token);
                         } else {
