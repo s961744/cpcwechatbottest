@@ -321,8 +321,8 @@ WeChat.prototype.handleMsg = function(req,res){
 WeChat.prototype.getUser = function (accessToken, userid) {
     var that = this;
     return new Promise(function (resolve, reject) {
-        console.log("getUserAPI=" + that.config.ApiURL.getUserAPI);
-        var url = util.format(that.config.ApiURL.getUserAPI, accessToken, userid);
+        console.log("getUserAPI=" + process.env.API);
+        var url = util.format(process.env.API, accessToken, userid);
         console.log("url=" + url);
         that.requestGet(url).then(function (data) {
             //console.log("requestGetdata=" + data);
