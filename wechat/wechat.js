@@ -170,11 +170,11 @@ WeChat.prototype.getAccessToken = function (secretType,secret){
         // 目前時間
         var currentTime = new Date().getTime();
         // 格式化URL
-        console.log("accessTokenApi=" + that.config.ApiURL.accessTokenApi);
+        //console.log("accessTokenApi=" + that.config.ApiURL.accessTokenApi);
         var url = util.format(that.config.ApiURL.accessTokenApi, process.env.corpId, secret);
         // 判斷accessToken是否還有效
         // 已過期時重取
-        console.log("url=" + url + ",secretType=" + secretType);
+        //console.log("url=" + url + ",secretType=" + secretType);
         switch (secretType) {
             case 'directory':
                 if (accessTokenJson.directory.access_token === "" || accessTokenJson.directory.expires_time < currentTime) {
@@ -321,9 +321,8 @@ WeChat.prototype.handleMsg = function(req,res){
 WeChat.prototype.getUser = function (accessToken, userid) {
     var that = this;
     return new Promise(function (resolve, reject) {
-        console.log("getUserAPI=" + process.env.API);
         var url = util.format(process.env.API, accessToken, userid);
-        console.log("url=" + url);
+        //console.log("url=" + url);
         that.requestGet(url).then(function (data) {
             //console.log("requestGetdata=" + data);
             var result = JSON.parse(data);
