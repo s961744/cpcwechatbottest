@@ -129,3 +129,76 @@ var job = schedule.scheduleJob('5,35 * * * * *', function () {
         return console.log("http request fail:" + JSON.stringify(optionsGet));
     }
 });
+
+
+// 建立成員排程 1次/10min
+var job = schedule.scheduleJob('0 0,10,20,30,40,50 * * * *', function () {
+    // 設定GET RESTful API連接參數
+    var optionsGet = {
+        host: '116.50.39.201',
+        port: 7102,
+        path: '/WechatRESTful/resources/WechatRESTfulTest/WechatUserAuth',
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+    };
+
+    // 取得wechat_user_auth中的待建立成員
+    try {
+        http.request(optionsGet, function (resGET) {
+            //console.log('STATUS: ' + res.statusCode);
+            //console.log('HEADERS: ' + JSON.stringify(res.headers));
+            var chunks = [];
+            var size = 0;
+            //resGET.setEncoding('utf8');
+            resGET.on('data', function (chunk) {
+                chunks.push(chunk);
+                size += chunk.length;
+            });
+            resGET.on('end', function () {
+                var data = null;
+                switch (chunks.length) {
+                    case 0: data = new Buffer(0);
+                        break;
+                    case 1: data = chunks[0];
+                        break;
+                    default:
+                        data = new Buffer(size);
+                        for (var i = 0, pos = 0, l = chunks.length; i < l; i++) {
+                            var chunk = chunks[i];
+                            chunk.copy(data, pos);
+                            pos += chunk.length;
+                        }
+                        break;
+                }
+                if (data.length < 3) {
+                    console.log('No user need to be created.');
+                }
+                else {
+                    try {
+                        var jdata = JSON.parse(data);
+                        jdata.forEach(function (row) {
+                            var user_id = row.user_id;
+                            var user_info = row.user_info;
+                            try {
+
+                                wechatApp.getAccessToken("directory", process.env.directorySecret).then(function (data) {
+                                    wechatApp.createUser(data, user_info);
+                                });
+                            }
+                            catch (e) {
+                                return console.log(e);
+                            }
+                        });
+                    }
+                    catch (e) {
+                        return console.log(e);
+                    }
+                }
+            });
+        }).end();
+    }
+    catch (e) {
+        return console.log("http request fail:" + JSON.stringify(optionsGet));
+    }
+});
+

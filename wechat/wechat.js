@@ -389,14 +389,14 @@ WeChat.prototype.getUser = function (accessToken, userid) {
 /**
  * 創建成員
  * @param {String} accessToken
- * @param {JSON} userData
+ * @param {JSON} userInfo
  */
-WeChat.prototype.createUser = function (accessToken, userData) {
+WeChat.prototype.createUser = function (accessToken, userInfo) {
     var that = this;
     return new Promise(function (resolve, reject) {
         var url = util.format(process.env.API_createUser, accessToken);
         //console.log("url=" + url);
-        that.requestPost(url).then(function (data) {
+        that.requestPost(url, userInfo).then(function (data) {
             //console.log("requestGetdata=" + data);
             var result = JSON.parse(data);
             //
