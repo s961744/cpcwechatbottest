@@ -2,10 +2,11 @@
 
 const
     crypto = require('crypto'), // 加密模組
-    tokenCrypto = require('wechat-crypto'), //微信Token解密
+    tokenCrypto = require('wechat-crypto'), // 微信Token解密
     https = require('https'), // htts模組
     http = require('http'), // http模組
-    util = require('util'), // util 工具
+    util = require('util'), // util 工具模組
+    urltil = require('url'),// url模組
     fs = require('fs'), // file system
     parseString = require('xml2js').parseString, // xml轉js模組
     accessTokenJson = require('./access_token'), // access_token.json
@@ -33,8 +34,8 @@ var WeChat = function(config){
     this.adminId = process.env.adminId;
 
     /**
-     * 用于处理 https Get请求方法
-     * @param {String} url 请求地址 
+     * 處理https GET
+     * @param {String} url
      */
     this.requestGet = function(url){
         return new Promise(function (resolve, reject) {
@@ -70,6 +71,51 @@ var WeChat = function(config){
             }).on('error', function (err) {
                 reject(err);
             });
+        });
+    }
+
+    /**
+     * 處理https POST
+     * @param {String} url
+     */
+    this.requestPost = function (url, data) {
+        return new Promise(function (resolve, reject) {
+            //解析 url 地址
+            var urlData = urltil.parse(url);
+            //设置 https.request  options 传入的参数对象
+            var options = {
+                //目标主机地址
+                hostname: urlData.hostname,
+                //目标地址 
+                path: urlData.path,
+                //请求方法
+                method: 'POST',
+                //头部协议
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Content-Length': Buffer.byteLength(data, 'utf-8')
+                }
+            };
+            var req = https.request(options, function (res) {
+                var buffer = [], result = '';
+                //用于监听 data 事件 接收数据
+                res.on('data', function (data) {
+                    buffer.push(data);
+                });
+                //用于监听 end 事件 完成数据的接收
+                res.on('end', function () {
+                    result = Buffer.concat(buffer).toString('utf-8');
+                    resolve(result);
+                })
+            })
+                //监听错误事件
+                .on('error', function (err) {
+                    console.log(err);
+                    reject(err);
+                });
+            //传入数据
+            req.write(data);
+            req.end();
         });
     }
 
@@ -316,14 +362,41 @@ WeChat.prototype.handleMsg = function(req,res){
 
 /**
  * 讀取成員
- * @param {Request} userid
+ * @param {String} accessToken
+ * @param {String} userid
  */
 WeChat.prototype.getUser = function (accessToken, userid) {
     var that = this;
     return new Promise(function (resolve, reject) {
-        var url = util.format(process.env.API, accessToken, userid);
+        var url = util.format(process.env.API_getUser, accessToken, userid);
         //console.log("url=" + url);
         that.requestGet(url).then(function (data) {
+            //console.log("requestGetdata=" + data);
+            var result = JSON.parse(data);
+            //
+            if (result.errcode == "0") {
+                resolve(result);
+                console.log(JSON.stringify(result));
+            } else {
+                // return error msg
+                console.log("error, errcode=" + result.errcode);
+                resolve(result);
+            }
+        });
+    });
+}
+
+/**
+ * 創建成員
+ * @param {String} accessToken
+ * @param {JSON} userData
+ */
+WeChat.prototype.createUser = function (accessToken, userData) {
+    var that = this;
+    return new Promise(function (resolve, reject) {
+        var url = util.format(process.env.API_createUser, accessToken);
+        //console.log("url=" + url);
+        that.requestPost(url).then(function (data) {
             //console.log("requestGetdata=" + data);
             var result = JSON.parse(data);
             //
