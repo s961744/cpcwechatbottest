@@ -74,9 +74,9 @@ var job = schedule.scheduleJob('5,35 * * * * *', function () {
                 }
                 if (data.length < 3) {
                     console.log('No messages need to be sent.');
-                    wechatApp.getAccessToken("directory", process.env.directorySecret).then(function (data) {
-                        wechatApp.getUser(data, "A0012272");
-                    });
+                    //wechatApp.getAccessToken("directory", process.env.directorySecret).then(function (data) {
+                    //    wechatApp.getUser(data, "A0012272");
+                    //});
                 }
                 else {
                     try {
@@ -93,7 +93,7 @@ var job = schedule.scheduleJob('5,35 * * * * *', function () {
                                         // 設定PUT RESTful API連接參數
                                         var paraPut = '?strMessageId=' + message_id;
                                         var optionsPut = {
-                                            host: '116.50.39.201',
+                                            host: process.env.RESTful_host,
                                             port: 7102,
                                             path: '/WechatRESTful/resources/WechatRESTfulTest' + paraPut,
                                             method: 'PUT'
@@ -135,7 +135,7 @@ var job = schedule.scheduleJob('5,35 * * * * *', function () {
 var job = schedule.scheduleJob('0 0,10,20,30,40,50 * * * *', function () {
     // 設定GET RESTful API連接參數
     var optionsGet = {
-        host: '116.50.39.201',
+        host: process.env.RESTful_host,
         port: 7102,
         path: '/WechatRESTful/resources/WechatRESTfulTest/WechatUserAuth',
         method: 'GET',
@@ -180,7 +180,6 @@ var job = schedule.scheduleJob('0 0,10,20,30,40,50 * * * *', function () {
                             var user_id = row.user_id;
                             var user_info = row.user_info;
                             try {
-
                                 wechatApp.getAccessToken("directory", process.env.directorySecret).then(function (data) {
                                     wechatApp.createUser(data, user_info);
                                 });

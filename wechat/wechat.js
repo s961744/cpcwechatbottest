@@ -308,7 +308,7 @@ WeChat.prototype.handleMsg = function(req,res){
                     switch (result.Event.toLowerCase()) {
                         //成員加入
                         case 'subscribe':
-                            var content = "您好，敬鵬微信推播Bot歡迎您\n";
+                            var content = "您好，敬鵬微信推播Bot歡迎您";
                             reportMsg = msg.txtMsg(fromUser,toUser,content);
                             break;
                         //選單按鈕
@@ -338,8 +338,6 @@ WeChat.prototype.handleMsg = function(req,res){
                             ];
                             reportMsg = msg.graphicMsg(fromUser, toUser, contentArr);
                             break;
-                        case '管理員':
-                            user.getUser("A0012272");
                         default:
                             var content = "無此指令!\n";
                             content += "請輸入正確指令或洽台灣資訊處(#1409)";;
