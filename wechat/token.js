@@ -1,7 +1,7 @@
 'use strict' // 嚴謹模式
 
 const
-    https = require('https'),
+    http = require('./../http'),
     util = require('util'),
     fs = require('fs'), // file system
     accessTokenJson = require('./access_token'); // access_token.json
@@ -23,7 +23,7 @@ exports.getAccessToken = function (secretType, secret){
         switch (secretType) {
             case 'directory':
                 if (accessTokenJson.directory.access_token === "" || accessTokenJson.directory.expires_time < currentTime) {
-                    requestGet(url).then(function (data) {
+                    http.requestHttpsGet(url).then(function (data) {
                         var result = JSON.parse(data);
                         if (result.errcode == "0") {
                             accessTokenJson.directory.access_token = result.access_token;
@@ -45,7 +45,7 @@ exports.getAccessToken = function (secretType, secret){
                 break;
             case 'agent1000002':
                 if (accessTokenJson.agent1000002.access_token === "" || accessTokenJson.agent1000002.expires_time < currentTime) {
-                    requestGet(url).then(function (data) {
+                    http.requestHttpsGet(url).then(function (data) {
                         var result = JSON.parse(data);
                         if (result.errcode == "0") {
                             accessTokenJson.agent1000002.access_token = result.access_token;
@@ -71,43 +71,3 @@ exports.getAccessToken = function (secretType, secret){
         }
     });
 }
-
-
-//https get
-function requestGet(url) {
-    return new Promise(function (resolve, reject) {
-        https.get(url, function (res) {
-            var chunks = [], result = "", size = 0;
-            res.on('data', function (chunk) {
-                chunks.push(chunk);
-                size += chunk.length;
-            });
-            res.on('end', function () {
-                var data = null;
-                switch (chunks.length) {
-                    case 0: data = new Buffer(0);
-                        break;
-                    case 1: data = chunks[0];
-                        break;
-                    default:
-                        data = new Buffer(size);
-                        for (var i = 0, pos = 0, l = chunks.length; i < l; i++) {
-                            var chunk = chunks[i];
-                            chunk.copy(data, pos);
-                            pos += chunk.length;
-                        }
-                        break;
-                }
-                if (data === '[]') {
-                    console.log("Empty result.");
-                }
-                else {
-                    resolve(data);
-                }
-            });
-        }).on('error', function (err) {
-            reject(err);
-        });
-    });
-}
-

@@ -76,50 +76,7 @@ var WeChat = function(config){
         });
     }
 
-    /**
-     * 處理https POST
-     * @param {String} url
-     */
-    this.requestPost = function (url, data) {
-        return new Promise(function (resolve, reject) {
-            //解析 url 地址
-            var urlData = urltil.parse(url);
-            //设置 https.request  options 传入的参数对象
-            var options = {
-                //目标主机地址
-                hostname: urlData.hostname,
-                //目标地址 
-                path: urlData.path,
-                //请求方法
-                method: 'POST',
-                //头部协议
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'Content-Length': Buffer.byteLength(data, 'utf-8')
-                }
-            };
-            var req = https.request(options, function (res) {
-                var buffer = [], result = '';
-                //用于监听 data 事件 接收数据
-                res.on('data', function (data) {
-                    buffer.push(data);
-                });
-                //用于监听 end 事件 完成数据的接收
-                res.on('end', function () {
-                    result = Buffer.concat(buffer).toString('utf-8');
-                    resolve(result);
-                })
-            })
-                //监听错误事件
-                .on('error', function (err) {
-                    console.log(err);
-                    reject(err);
-                });
-            //传入数据
-            req.write(data);
-            req.end();
-        });
-    }
+    
 
     /**
      * 消息發送
@@ -280,52 +237,52 @@ WeChat.prototype.getAccessToken = function (secretType,secret){
  * @param {Request} req Request
  * @param {Response} res Response
  */
-WeChat.prototype.handleMsg = function(req,res){
-    var buffer = [],that = this;
-    var cryptoGraphy = new CryptoGraphy(that.config,req);
+WeChat.prototype.handleMsg = function (req, res) {
+    var buffer = [], that = this;
+    var cryptoGraphy = new CryptoGraphy(that.config, req);
 
     //接收資料
-    req.on('data',function(data){
+    req.on('data', function (data) {
         buffer.push(data);
     });
     //處理接收完成的資料
-    req.on('end',function(){
+    req.on('end', function () {
         var msgXml = Buffer.concat(buffer).toString('utf-8');
 
         //解析xml
         parseString(msgXml, { explicitArray: false }, function (err, result) {
             //console.log("result=" + JSON.stringify(result));
-            if(!err){
+            if (!err) {
                 result = result.xml;
                 //消息解密
                 result = cryptoGraphy.decryptMsg(result.Encrypt);
                 var toUser = result.ToUserName; //接收方
                 var fromUser = result.FromUserName;//發送方
-                var reportMsg = ""; 
+                var reportMsg = "";
 
                 //判斷訊息類型
                 //事件
-                if(result.MsgType.toLowerCase() === "event"){
+                if (result.MsgType.toLowerCase() === "event") {
                     //判斷事件類型
                     switch (result.Event.toLowerCase()) {
                         //成員加入
                         case 'subscribe':
                             var content = "您好，敬鵬微信推播Bot歡迎您";
-                            reportMsg = msg.txtMsg(fromUser,toUser,content);
+                            reportMsg = msg.txtMsg(fromUser, toUser, content);
                             break;
                         //選單按鈕
                         case 'click':
-                             var contentArr = [
-                                {Title:"Node.js 微信自定义菜单",Description:"使用Node.js实现自定义微信菜单",PicUrl:"http://img.blog.csdn.net/20170605162832842?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHZrQ29kZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast",Url:"http://blog.csdn.net/hvkcoder/article/details/72868520"},
-                                {Title:"Node.js access_token的获取、存储及更新",Description:"Node.js access_token的获取、存储及更新",PicUrl:"http://img.blog.csdn.net/20170528151333883?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHZrQ29kZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast",Url:"http://blog.csdn.net/hvkcoder/article/details/72783631"},
-                                {Title:"Node.js 接入微信公众平台开发",Description:"Node.js 接入微信公众平台开发",PicUrl:"http://img.blog.csdn.net/20170605162832842?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHZrQ29kZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast",Url:"http://blog.csdn.net/hvkcoder/article/details/72765279"}
+                            var contentArr = [
+                                { Title: "Node.js 微信自定义菜单", Description: "使用Node.js实现自定义微信菜单", PicUrl: "http://img.blog.csdn.net/20170605162832842?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHZrQ29kZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast", Url: "http://blog.csdn.net/hvkcoder/article/details/72868520" },
+                                { Title: "Node.js access_token的获取、存储及更新", Description: "Node.js access_token的获取、存储及更新", PicUrl: "http://img.blog.csdn.net/20170528151333883?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHZrQ29kZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast", Url: "http://blog.csdn.net/hvkcoder/article/details/72783631" },
+                                { Title: "Node.js 接入微信公众平台开发", Description: "Node.js 接入微信公众平台开发", PicUrl: "http://img.blog.csdn.net/20170605162832842?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHZrQ29kZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast", Url: "http://blog.csdn.net/hvkcoder/article/details/72765279" }
                             ];
-                            reportMsg = msg.graphicMsg(fromUser,toUser,contentArr);
-                        break;
+                            reportMsg = msg.graphicMsg(fromUser, toUser, contentArr);
+                            break;
                     }
                 }
                 //文字
-                else if(result.MsgType.toLowerCase() === "text"){
+                else if (result.MsgType.toLowerCase() === "text") {
                     //根據使用者輸入訊息回傳值
                     switch (result.Content) {
                         case '文字':
@@ -371,60 +328,9 @@ WeChat.prototype.handleMsg = function(req,res){
                             break;
                     }
                 }
-            }else{
+            } else {
                 //打印错误
                 console.log(err);
-            }
-        });
-    });
-}
-
-/**
- * 讀取成員
- * @param {String} accessToken
- * @param {String} userid
- */
-WeChat.prototype.getUser = function (accessToken, userid) {
-    var that = this;
-    return new Promise(function (resolve, reject) {
-        var url = util.format(process.env.API_getUser, accessToken, userid);
-        //console.log("url=" + url);
-        that.requestGet(url).then(function (data) {
-            //console.log("requestGetdata=" + data);
-            var result = JSON.parse(data);
-            //
-            if (result.errcode == "0") {
-                resolve(result);
-                console.log(JSON.stringify(result));
-            } else {
-                // return error msg
-                console.log("error, errcode=" + result.errcode);
-                resolve(result);
-            }
-        });
-    });
-}
-
-/**
- * 創建成員
- * @param {String} accessToken
- * @param {JSON} userInfo
- */
-WeChat.prototype.createUser = function (accessToken, userInfo) {
-    var that = this;
-    return new Promise(function (resolve, reject) {
-        var url = util.format(process.env.API_createUser, accessToken);
-        //console.log("url=" + url);
-        that.requestPost(url, userInfo).then(function (data) {
-            //console.log("requestGetdata=" + data);
-            var result = JSON.parse(data);
-            //
-            if (result.errcode == "0") {
-                console.log(JSON.stringify(result));
-            } else {
-                // return error msg
-                console.log("Create user error, errcode=" + result.errcode);
-                resolve(result);
             }
         });
     });
