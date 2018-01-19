@@ -357,6 +357,7 @@ WeChat.prototype.handleMsg = function(req,res){
                 }
                 //回復訊息加密
                 reportMsg = cryptoGraphy.encryptMsg(reportMsg);
+                console.log(reportMsg);
                 //返回给微信伺服器
                 res.send(reportMsg);
 
