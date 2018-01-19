@@ -1,14 +1,15 @@
 'use strict' // 嚴謹模式
 
 const
+    https = require('https'),
+    util = require('util'),
     fs = require('fs'), // file system
     accessTokenJson = require('./access_token'); // access_token.json
 
 /**
- * 回復文字訊息
- * @param {String} toUser 接收端
- * @param {String} fromUser 發送端
- * @param {String}  content 訊息內容
+ * 取得Token
+ * @param {String} secretType Token類型
+ * @param {String} secret secret
  */
 exports.getAccessToken = function (secretType, secret){
     return new Promise(function (resolve, reject) {
