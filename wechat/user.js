@@ -20,13 +20,15 @@ exports.getUser = function (accessToken, userid) {
             //
             if (result.errcode == "0") {
                 console.log(JSON.stringify(result));
+                resolve(result.name);
             } else {
                 // return error msg
                 console.log("error, errcode=" + result.errcode);
-                result = "error, errocode=" + result.errcode;
+                reject("error, errocode=" + result.errcode);
+
             }
         });
-        resolve(JSON.stringify(result));
+        
     });
 }
 
