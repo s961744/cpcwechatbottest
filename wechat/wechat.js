@@ -135,7 +135,7 @@ WeChat.prototype.auth = function (req, res) {
         echostr = req.query.echostr;//随机字符串
 
     //2.将token、timestamp、nonce三个参数进行字典序排序
-    var array = [config.token, timestamp, nonce];
+    var array = [process.env.directoryToken, timestamp, nonce];
     array.sort();
 
     //3.将三个参数字符串拼接成一个字符串进行sha1加密
