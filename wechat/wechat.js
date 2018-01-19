@@ -141,7 +141,7 @@ WeChat.prototype.auth = function(req,res){
     // });
 
         //1.获取微信服务器Get请求的参数 signature、timestamp、nonce、echostr
-        var signature = req.query.signature,//微信加密签名
+        var signature = req.query.msg_signature,//微信加密签名
             timestamp = req.query.timestamp,//时间戳
             nonce = req.query.nonce,//随机数
             echostr = req.query.echostr;//随机字符串
