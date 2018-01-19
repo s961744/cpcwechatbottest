@@ -127,24 +127,15 @@ var WeChat = function(config){
  * @param {Request} req Request 對象
  * @param {Response} res Response 對象
  */
-WeChat.prototype.auth = function (req, res) {
-    //1.获取微信服务器Get请求的参数 signature、timestamp、nonce、echostr
-    var signature = req.query.msg_signature,//微信加密签名
-        timestamp = req.query.timestamp,//时间戳
-        nonce = req.query.nonce,//随机数
-        echostr = req.query.echostr;//随机字符串
-
-    //2.将token、timestamp、nonce三个参数进行字典序排序
-    var array = [process.env.directoryToken, timestamp, nonce];
-    array.sort();
-
-    //3.将三个参数字符串拼接成一个字符串进行sha1加密
-    var tempStr = array.join('');
-    const hashCode = crypto.createHash('sha1'); //创建加密类型 
-    var resultCode = hashCode.update(tempStr, 'utf8').digest('hex'); //对传入的字符串进行加密
-
-    //4.开发者获得加密后的字符串可与signature对比，标识该请求来源于微信
-    res.send(echostr);
+WeChat.prototype.auth = function(req,res){
+    var msg_signature = req.query.msg_signature;
+    var timestamp = req.query.timestamp;
+    var nonce = req.query.nonce;
+    var echostr = req.query.echostr;
+    var cryptor = new WXBizMsgCrypt(process.env.directoryToken, process.env.directoryEncodingAESKey, process.env.corpId)
+    var s = cryptor.decrypt(echostr);
+    res.send(s.message);
+    console.log("s.message=" + s.message);
 }
 
 /**
