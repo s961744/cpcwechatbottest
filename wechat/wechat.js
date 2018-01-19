@@ -334,9 +334,10 @@ WeChat.prototype.handleMsg = function(req,res){
                             break;
                         case '管理員':
                             token.getAccessToken("directory", process.env.directorySecret).then(function (data) {
-                                var content = user.getUser(data, "A0012272");
+                                user.getUser(data, "A0012272").then(function (content) {
+                                    reportMsg = msg.txtMsg(fromUser, toUser, content);
+                                });
                             });
-                            reportMsg = msg.txtMsg(fromUser, toUser, content);
                             break;
                         case '圖文選單':
                             var contentArr = [
