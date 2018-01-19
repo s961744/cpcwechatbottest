@@ -11,20 +11,22 @@ const
  */
 exports.getUser = function (accessToken, userid) {  
     // 設定PUT RESTful API連接參數
-    var url = util.format(this.config.ApiURL.getUserAPI, accessToken, userid);
+    var result = "";
+    var url = util.format(process.env.API_getUser, accessToken, userid);
     console.log(url);
     requestGet(url).then(function (data) {
         //console.log("requestGetdata=" + data);
-        var result = JSON.parse(data);
+        result = JSON.parse(data);
         //
         if (result.errcode == "0") {
             console.log(JSON.stringify(result));
         } else {
             // return error msg
             console.log("error, errcode=" + result.errcode);
-            resolve(result);
+            result = "error, errocode=" + result.errcode;
         }
     });
+    return result;
 }
 
 //https get
@@ -64,3 +66,4 @@ function requestGet(url) {
         });
     });
 }
+

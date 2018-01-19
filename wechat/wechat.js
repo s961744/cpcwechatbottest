@@ -12,6 +12,8 @@ const
     accessTokenJson = require('./access_token'), // access_token.json
     menus = require('./menus'), // 微信選單
     msg = require('./msg'),// 訊息處理
+    user = require('./user'),// 成員處理
+    token = require('./token'),//Token處理
     CryptoGraphy = require('./cryptoGraphy'); // 微信消息加解密模組
 
 /**
@@ -330,6 +332,12 @@ WeChat.prototype.handleMsg = function(req,res){
                             var content = "Echo:" + result.Content;
                             reportMsg = msg.txtMsg(fromUser, toUser, content);
                             break;
+                        case '管理員':
+                            token.getAccessToken("directory", process.env.directorySecret).then(function (data) {
+                                var content = user.getUser(data, "A0012272");
+                            });
+                            reportMsg = msg.txtMsg(fromUser, toUser, content);
+                            break;
                         case '圖文選單':
                             var contentArr = [
                                 { Title: "Node.js 微信自定义菜单", Description: "使用Node.js实现自定义微信菜单", PicUrl: "http://img.blog.csdn.net/20170605162832842?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHZrQ29kZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast", Url: "http://blog.csdn.net/hvkcoder/article/details/72868520" },
@@ -402,7 +410,7 @@ WeChat.prototype.createUser = function (accessToken, userInfo) {
                 console.log(JSON.stringify(result));
             } else {
                 // return error msg
-                console.log("error, errcode=" + result.errcode);
+                console.log("Create user error, errcode=" + result.errcode);
                 resolve(result);
             }
         });
