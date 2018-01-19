@@ -2,7 +2,7 @@
 
 const
     crypto = require('crypto'), // 加密模組
-    tokenCrypto = require('wechat-crypto'), // 微信Token解密
+    WXBizMsgCrypt = require('wechat-crypto'), // 微信Token解密
     https = require('https'), // htts模組
     http = require('http'), // http模組
     util = require('util'), // util 工具模組
@@ -132,10 +132,10 @@ WeChat.prototype.auth = function(req,res){
     var timestamp = req.query.timestamp;
     var nonce = req.query.nonce;
     var echostr = req.query.echostr;
-    var cryptor = new tokenCrypto(process.env.token, process.env.encodingAESKey, process.env.corpId)
+    var cryptor = new WXBizMsgCrypt(process.env.token, process.env.encodingAESKey, process.env.corpId)
     var s = cryptor.decrypt(echostr);
-    res.send(s.msg);
-    console.log("s.message=" + s.msg);
+    res.send(s.message);
+    console.log("s.message=" + s.message);
 }
 
 /**
