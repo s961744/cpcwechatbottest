@@ -331,12 +331,20 @@ WeChat.prototype.handleMsg = function(req,res){
                         case '文字':
                             var content = "Echo:" + result.Content;
                             reportMsg = msg.txtMsg(fromUser, toUser, content);
+                            //回復訊息加密
+                            reportMsg = cryptoGraphy.encryptMsg(reportMsg);
+                            //返回给微信伺服器
+                            res.send(reportMsg);
                             break;
                         case '管理員':
                             token.getAccessToken("directory", process.env.directorySecret).then(function (data) {
                                 user.getUser(data, "A0012272").then(function (content) {
                                     console.log(content);
                                     reportMsg = msg.txtMsg(fromUser, toUser, content);
+                                    //回復訊息加密
+                                    reportMsg = cryptoGraphy.encryptMsg(reportMsg);
+                                    //返回给微信伺服器
+                                    res.send(reportMsg);
                                 });
                             });
                             break;
@@ -347,20 +355,22 @@ WeChat.prototype.handleMsg = function(req,res){
                                 { Title: "Node.js 接入微信公众平台开发", Description: "Node.js 接入微信公众平台开发", PicUrl: "http://img.blog.csdn.net/20170605162832842?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHZrQ29kZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast", Url: "http://blog.csdn.net/hvkcoder/article/details/72765279" }
                             ];
                             reportMsg = msg.graphicMsg(fromUser, toUser, contentArr);
+                            //回復訊息加密
+                            reportMsg = cryptoGraphy.encryptMsg(reportMsg);
+                            //返回给微信伺服器
+                            res.send(reportMsg);
                             break;
                         default:
                             var content = "無此指令!\n";
                             content += "請輸入正確指令或洽台灣資訊處(#1409)";;
                             reportMsg = msg.txtMsg(fromUser, toUser, content);
+                            //回復訊息加密
+                            reportMsg = cryptoGraphy.encryptMsg(reportMsg);
+                            //返回给微信伺服器
+                            res.send(reportMsg);
                             break;
                     }
                 }
-                //回復訊息加密
-                reportMsg = cryptoGraphy.encryptMsg(reportMsg);
-                console.log(reportMsg);
-                //返回给微信伺服器
-                res.send(reportMsg);
-
             }else{
                 //打印错误
                 console.log(err);
