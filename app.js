@@ -3,6 +3,7 @@ const express = require('express'), //express 框架
       schedule = require('node-schedule'),
       wechat = require('./wechat/wechat'),
       user = require('./wechat/user'),
+      token = require('./wechat/token'),
       config = require('./config');//引入配置文件
        
 var app = express();//实例express框架
@@ -17,13 +18,6 @@ app.get('/',function(req,res){
 //用于处理所有进入 3000 端口 post 的连接请求
 app.post('/',function(req,res){
     wechatApp.handleMsg(req,res);
-});
-
-//用于请求获取 access_token
-app.get('/getAccessToken',function(req,res){
-    wechatApp.getAccessToken().then(function(data){
-        res.send(data);
-    });    
 });
 
 // 因為 express 預設走 port 3000，而 heroku 上預設卻不是，要透過下列程式轉換
@@ -88,7 +82,7 @@ var job = schedule.scheduleJob('5,35 * * * * *', function () {
                             try {
                                 var post_data = JSON.parse(JSON.stringify('{"touser": "' + user_id + '", "msgtype": "text", "agentid": 1000002,"text" : {"content" : "' + message + '"},"safe": 0}'));
                                 console.log("post_data=" + JSON.stringify(post_data));
-                                wechatApp.getAccessToken("agent1000002", process.env.agentSecret1000002).then(function (data) {
+                                token.getAccessToken("agent1000002", process.env.agentSecret1000002).then(function (data) {
                                     wechatApp.postMsg(data, post_data).then(function () {
                                         // 設定PUT RESTful API連接參數
                                         var paraPut = '?strMessageId=' + message_id;
@@ -180,7 +174,7 @@ var job = schedule.scheduleJob('0 0,10,20,30,40,50 * * * *', function () {
                             var user_id = row.user_id;
                             var user_info = row.user_info;
                             try {
-                                wechatApp.getAccessToken("directory", process.env.directorySecret).then(function (data) {
+                                token.getAccessToken("directory", process.env.directorySecret).then(function (data) {
                                     wechatApp.createUser(data, user_info);
                                 });
                             }

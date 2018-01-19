@@ -2,8 +2,7 @@
 
 const
     http = require('./../http'),
-    util = require('util'),
-    config = require('./../config');//引入配置文件
+    util = require('util');
 /**
  * 讀取成員
  * @param {String} access_token
