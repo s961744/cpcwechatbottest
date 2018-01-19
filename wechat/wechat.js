@@ -134,8 +134,8 @@ WeChat.prototype.auth = function(req,res){
     var echostr = req.query.echostr;
     var cryptor = new tokenCrypto(process.env.token, process.env.encodingAESKey, process.env.corpId)
     var s = cryptor.decrypt(echostr);
-    res.send(s.message);
-    console.log("s.message=" + s.message);
+    res.send(s.msg);
+    console.log("s.message=" + s.msg);
 }
 
 /**
