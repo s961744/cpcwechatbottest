@@ -26,7 +26,7 @@ exports.getUser = function (accessToken, userid) {
             result = "error, errocode=" + result.errcode;
         }
     });
-    return result;
+    return JSON.stringify(result);
 }
 
 //https get
