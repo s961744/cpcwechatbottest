@@ -261,6 +261,7 @@ WeChat.prototype.handleMsg = function (req, res) {
                             //返回给微信伺服器
                             res.send(reportMsg);
                             break;
+                        
                     }
                 }
                 //文字
@@ -309,6 +310,11 @@ WeChat.prototype.handleMsg = function (req, res) {
                             res.send(reportMsg);
                             break;
                     }
+                }
+                //圖片
+                else if (result.MsgType.toLowerCase() === "image") {
+                    //圖片上傳歸檔
+                    
                 }
             } else {
                 //打印错误

@@ -175,7 +175,7 @@ var job = schedule.scheduleJob('0 0,10,20,30,40,50 * * * *', function () {
                             var user_info = row.user_info;
                             try {
                                 token.getAccessToken("directory", process.env.directorySecret).then(function (data) {
-                                    wechatApp.createUser(data, user_info);
+                                    user.createUser(data, user_info);
                                 });
                             }
                             catch (e) {
