@@ -39,7 +39,7 @@ exports.uploadMediaContent = function (data) {
         console.log(FileName);
         var url = 'http://116.50.39.201:7102/FileRESTful/resources/FileRESTful/postFile/WechatImg/' + FileName;
         try {
-            http.requestHttpsPost(url,data).then(function (data) {
+            http.requestHttpPost(url,data).then(function (data) {
                 resolve(data);
             });
         }

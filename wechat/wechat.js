@@ -6,7 +6,6 @@ const
     https = require('https'), // htts模組
     http = require('http'), // http模組
     util = require('util'), // util 工具模組
-    urltil = require('url'),// url模組
     fs = require('fs'), // file system
     parseString = require('xml2js').parseString, // xml轉js模組
     accessTokenJson = require('./access_token'), // access_token.json
