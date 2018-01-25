@@ -57,7 +57,17 @@ exports.uploadMediaContent = function (data) {
                     console.log("圖片上傳結果：" + chunk);
                     resolve("圖片上傳結果：" + chunk);
                 });
-            });
+                //用于监听 end 事件 完成数据的接收
+                res.on('end', function () {
+                    result = Buffer.concat(buffer).toString('utf-8');
+                    resolve(result);
+                })
+            })
+                //监听错误事件
+                .on('error', function (err) {
+                    console.log(err);
+                    reject(err);
+                });
 
             // post the data
             post_req.write(data);

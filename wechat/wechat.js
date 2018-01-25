@@ -316,6 +316,7 @@ WeChat.prototype.handleMsg = function (req, res) {
                 else if (result.MsgType.toLowerCase() === "image") {
                     //圖片上傳歸檔
                     var mediaId = result.MediaId;
+                    console.log("mediaId=" + mediaId);
                     media.getMediaContent(mediaId).then(function (data) {
                         media.uploadMediaContent(data);
                     });
