@@ -37,44 +37,14 @@ exports.uploadMediaContent = function (data) {
         var random = Math.floor(Math.random() * 9999) + 1;
         var FileName = now + random + ".png";
         console.log(FileName);
-        var optionsPost = {
-            host: '116.50.39.201',
-            port: 7102,
-            path: '/FileRESTful/resources/FileRESTful/postFile/WechatImg/' + FileName,
-            method: 'POST',
-            encoding: null
-        };
+        var url = '116.50.39.201:7102/FileRESTful/resources/FileRESTful/postFile/WechatImg/' + FileName;
         try {
-            var post_req = http.request(optionsPost, function (res) {
-                res.on('data', function (chunk) {
-                    //var jdata = JSON.parse(chunk);
-                    //jdata.forEach(function (row) {
-                    //    var ReturnMsg = row.ReturnMsg;
-                    //    var Directory = row.Directory;
-                    //    console.log(ReturnMsg);
-                    //    console.log(Directory);
-                    //});
-                    console.log("圖片上傳結果：" + chunk);
-                    resolve("圖片上傳結果：" + chunk);
-                });
-                //用于监听 end 事件 完成数据的接收
-                res.on('end', function () {
-                    result = Buffer.concat(buffer).toString('utf-8');
-                    resolve(result);
-                })
-            })
-                //监听错误事件
-                .on('error', function (err) {
-                    console.log(err);
-                    reject(err);
-                });
-
-            // post the data
-            post_req.write(data);
-            post_req.end();
+            http.requestHttpsPost(url,data).then(function (data) {
+                resolve(data);
+            });
         }
         catch (e) {
-            reject("http request fail:" + JSON.stringify(optionsPost) + "," + e);
+            reject("error:" + e);
         }
     });
 }
