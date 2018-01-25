@@ -37,7 +37,7 @@ exports.uploadMediaContent = function (data) {
         var random = Math.floor(Math.random() * 9999) + 1;
         var FileName = now + random + ".png";
         console.log(FileName);
-        var url = '116.50.39.201:7102/FileRESTful/resources/FileRESTful/postFile/WechatImg/' + FileName;
+        var url = 'http://116.50.39.201:7102/FileRESTful/resources/FileRESTful/postFile/WechatImg/' + FileName;
         try {
             http.requestHttpsPost(url,data).then(function (data) {
                 resolve(data);
