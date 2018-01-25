@@ -314,7 +314,7 @@ WeChat.prototype.handleMsg = function (req, res) {
                 //圖片
                 else if (result.MsgType.toLowerCase() === "image") {
                     //圖片上傳歸檔
-                    
+                    var mediaId = result.MediaId;
                 }
             } else {
                 //打印错误
