@@ -1,6 +1,7 @@
 ﻿'use strict' // 嚴謹模式
 
 const
+    urltil = require('url'),// url模組
     http = require('http'),
     https = require('https');
 
