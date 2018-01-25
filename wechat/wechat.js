@@ -13,6 +13,7 @@ const
     menus = require('./menus'), // 微信選單
     msg = require('./msg'),// 訊息處理
     user = require('./user'),// 成員處理
+    media = require('./media'),// 影像處理
     token = require('./token'),//Token處理
     CryptoGraphy = require('./cryptoGraphy'); // 微信消息加解密模組
 
@@ -315,6 +316,9 @@ WeChat.prototype.handleMsg = function (req, res) {
                 else if (result.MsgType.toLowerCase() === "image") {
                     //圖片上傳歸檔
                     var mediaId = result.MediaId;
+                    media.getMediaContent(mediaId).then(function (data) {
+                        media.uploadMediaContent(data);
+                    });
                 }
             } else {
                 //打印错误
